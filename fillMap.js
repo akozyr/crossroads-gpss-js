@@ -81,3 +81,55 @@ var verticalLinesAttributes = verticalLines
   .attr("y2", d => d.y2)
   .attr('stroke', 'white')
 
+var trafficLightGroup = svgContainer.append('g');
+
+var trafficLightWidth = 40
+var trafficLightHeight = 40
+
+var trafficLightFrame = trafficLightGroup
+  .append('rect')
+  .attr("x", svgWidth / 2 - trafficLightWidth / 2 + 1)
+  .attr("y", svgHeight / 2 - trafficLightHeight / 2 + 1)
+  .attr("transform", 'rotate(45 ' + svgWidth / 2 + ' ' + svgHeight / 2 + ')')
+  .attr("width", trafficLightWidth)
+  .attr("height", trafficLightHeight)
+  .attr('fill', 'rgb(132, 132, 132)')
+
+var trafficLightPartRadius = 5
+
+var trafficLightHorizontalGroup = trafficLightGroup.append('g');
+var trafficLightVerticalGroup = trafficLightGroup.append('g');
+
+var jsonTrafficLightHorizontalParts = [
+  { 'cx': svgWidth / 2 - trafficLightWidth / 3, 'cy': svgHeight / 2 + 1},
+  { 'cx': svgWidth / 2 + trafficLightWidth / 3, 'cy': svgHeight / 2 + 1}
+]
+
+var trafficLightHorizontalParts = trafficLightHorizontalGroup.selectAll("circle")
+  .data(jsonTrafficLightHorizontalParts)
+  .enter()
+  .append("circle")
+
+var trafficLightHorizontalPartsAttributes = trafficLightHorizontalParts
+  .attr("cx", d => d.cx)
+  .attr("cy", d => d.cy)
+  .attr("r", trafficLightPartRadius)
+  .attr('fill', 'white')
+
+var jsonTrafficLightVerticalParts = [
+  { 'cx': svgWidth / 2, 'cy': svgHeight / 2 - trafficLightHeight / 3 },
+  { 'cx': svgWidth / 2, 'cy': svgHeight / 2 + trafficLightHeight / 3 }
+]
+
+var trafficLightVerticalParts = trafficLightVerticalGroup.selectAll("circle")
+  .data(jsonTrafficLightVerticalParts)
+  .enter()
+  .append("circle")
+
+var trafficLightVerticalPartsAttributes = trafficLightVerticalParts
+  .attr("cx", d => d.cx)
+  .attr("cy", d => d.cy)
+  .attr("r", trafficLightPartRadius)
+  .attr('fill', 'white')
+
+
