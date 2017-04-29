@@ -132,4 +132,10 @@ var trafficLightVerticalPartsAttributes = trafficLightVerticalParts
   .attr("r", trafficLightPartRadius)
   .attr('fill', 'white')
 
+var car = svgContainer.append('circle')
+  .attr('cx', 0)
+  .attr('cy', grassHeight + roadWidth * 0.75)
+  .attr('r', 15)
+  .attr('fill', 'blue')
+
 
