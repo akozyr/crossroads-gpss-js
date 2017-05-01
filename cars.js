@@ -1,47 +1,77 @@
-var car = document.createElementNS(ns, 'circle')
-
-car.setAttribute('cx', 0)
-car.setAttribute('cy', grassHeight + roadWidth * 0.75)
-car.setAttribute('r', 15)
-car.setAttribute('fill', 'blue')
-
-svg.append(car)
-
-var pathData = 'M' + 0 + ',' + 0
-  + 'H' + grassWidth + 'q' + roadWidth / 4 + ',' + 0 + ',' +
-  + roadWidth / 4 + ',' + roadWidth / 4 + 'v' + grassHeight
-
-var path = document.createElementNS(ns, 'path')
-
-path.setAttribute('d', pathData)
-path.setAttribute('fill', 'none')
-path.setAttribute('id', 'path1')
-svg.append(path)
-
-car.transform.baseVal.appendItem(svg.createSVGTransform())
-
-var pathLength = path.getTotalLength()
-var duration = 100
-var deltaTime = 1 / duration
-var currentTime = 0
-
-requestAnimationFrameID = requestAnimationFrame(doAnim);
-
-function doAnim()
+function generateRoadRoutes(svg, ns)
 {
-  var p = path.getPointAtLength(currentTime * pathLength)
-  car.transform.baseVal.getItem(0).setTranslate(p.x, p.y)
-  currentTime += deltaTime
+  var roadRoutesData = [
+    'M' + 0 + ',' + 0 + 'H' + grassWidth + 'q' + roadWidth / 4 + ',' + 0 + ',' + roadWidth / 4 + ',' + roadWidth / 4 + 'v' + grassHeight
+  ]
 
-  requestAnimationFrameID = requestAnimationFrame(doAnim)
+  var roadRoutes = []
+  var pathElement = null
+  for (var i = 0; i < roadRoutesData.length; i++) {
+    pathElement = document.createElementNS(ns, 'path')
+
+    pathElement.setAttribute('d', roadRoutesData[i])
+    pathElement.setAttribute('fill', 'none')
+    // pathElement.setAttribute('stroke', 'red')
+
+    svg.append(pathElement)
+    roadRoutes.push(pathElement)
+  }
+
+  return roadRoutes
 }
 
-function onRun()
+function Car()
 {
-  requestAnimationFrameID = requestAnimationFrame(doAnim)
-}
+  const radius = 15
+  const carColor = 'blue'
+  const duration = 100
 
-function onStop()
-{
-  cancelAnimationFrame(requestAnimationFrameID)
+  this.startX = 0
+  this.startY = 0
+  this.currentTime = 0
+  this.deltaTime = 1 / duration
+  this.route = null
+  this.svgElement = null
+
+  this.init = (partOfCrossroads) => {
+    var typeRoad = null
+    switch (partOfCrossroads) {
+      case 'top':
+        this.startX = 0
+        this.startY = 0
+        typeRoad = 0
+        break
+      case 'right':
+        this.startX = 0
+        this.startY = 0
+        typeRoad = 1
+        break
+      case 'bottom':
+        this.startX = 0
+        this.startY = 0
+        typeRoad = 2
+        break
+      case 'left':
+        this.startX = 0
+        this.startY = grassHeight + roadWidth * 0.75
+        typeRoad = 4
+        break
+    }
+
+    this.route = 0
+  }
+
+  this.draw = (svg, ns) => {
+    var car = document.createElementNS(ns, 'circle')
+
+    car.setAttribute('cx', this.startX)
+    car.setAttribute('cy', this.startY)
+    car.setAttribute('r', radius)
+    car.setAttribute('fill', carColor)
+
+    car.transform.baseVal.appendItem(svg.createSVGTransform())
+
+    svg.append(car)
+    this.svgElement = car
+  }
 }
