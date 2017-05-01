@@ -1,6 +1,11 @@
 function generateRoadRoutes(svg, ns)
 {
   var roadRoutesData = [
+    // from left to top
+    'M' + 0 + ',' + 0 + 'H' + (grassWidth + roadWidth / 2) + 'q' + roadWidth / 4 + ',' + 0 + ',' + roadWidth / 4 + ',' + (-roadWidth / 4) + 'v' + (-(grassHeight + roadWidth / 2)),
+    // form left to right
+    'M' + 0 + ',' + 0 + 'H' + svgWidth,
+    // from left to bottom
     'M' + 0 + ',' + 0 + 'H' + grassWidth + 'q' + roadWidth / 4 + ',' + 0 + ',' + roadWidth / 4 + ',' + roadWidth / 4 + 'v' + grassHeight
   ]
 
@@ -12,6 +17,7 @@ function generateRoadRoutes(svg, ns)
     pathElement.setAttribute('d', roadRoutesData[i])
     pathElement.setAttribute('fill', 'none')
     // pathElement.setAttribute('stroke', 'red')
+    // pathElement.setAttribute('stroke-width', 3)
 
     svg.append(pathElement)
     roadRoutes.push(pathElement)
@@ -58,7 +64,7 @@ function Car()
         break
     }
 
-    this.route = 0
+    this.route = 2
   }
 
   this.draw = (svg, ns) => {
