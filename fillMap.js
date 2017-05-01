@@ -6,6 +6,7 @@ var svgContainer = d3.select("body")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight)
+  .attr('id', 'svgElement')
 
 // draw the border
 var border = svgContainer.append("rect")
@@ -137,5 +138,65 @@ var car = svgContainer.append('circle')
   .attr('cy', grassHeight + roadWidth * 0.75)
   .attr('r', 15)
   .attr('fill', 'blue')
+  .attr('id', 'car')
+
+var path = 'M' + 0 + ',' + 0
+  + 'H' + grassWidth + 'q' + roadWidth / 4 + ',' + 0 + ',' +
+  + roadWidth / 4 + ',' + roadWidth / 4 + 'v' + grassHeight
+
+var path1 = svgContainer.append('path')
+  .attr('d', path)
+  .attr('id', 'path1')
+  .attr('fill', 'none')
+
+/*var transition = car.transition()
+  .duration(7000)
+  .attrTween('transform', translateAlong(path1.node()))
+
+function translateAlong(path) {
+  var pathLength = path.getTotalLength()
+  return (d, i, a) => {
+    return (t) => {
+      var p = path.getPointAtLength(t * pathLength)
+
+      if (t < 0.9) {
+        return "translate(" + p.x + "," + p.y + ")"
+      } else {
+        return "translate(0)"
+      }
+    }
+  }
+}*/
+
+var pathElement = document.getElementById('path1')
+var carElement = document.getElementById('car')
+
+carElement.transform.baseVal.appendItem(svgElement.createSVGTransform())
+
+var pathLength = pathElement.getTotalLength()
+var duration = 100
+var deltaTime = 1 / duration
+var currentTime = 0
+
+requestAnimationFrameID = requestAnimationFrame(doAnim);
+
+function doAnim()
+{
+  var p = pathElement.getPointAtLength(currentTime * pathLength)
+  carElement.transform.baseVal.getItem(0).setTranslate(p.x, p.y)
+  currentTime += deltaTime
+
+  requestAnimationFrameID = requestAnimationFrame(doAnim)
+}
+
+function onRun()
+{
+  requestAnimationFrameID = requestAnimationFrame(doAnim)
+}
+
+function onStop()
+{
+  cancelAnimationFrame(requestAnimationFrameID)
+}
 
 
