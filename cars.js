@@ -1,12 +1,6 @@
 function generateRoadRoutes(svg, ns)
 {
   var roadRoutesData = [
-    // from left to top
-    'M' + 0 + ',' + 0 + 'H' + (grassWidth + roadWidth / 2) + 'q' + roadWidth / 4 + ',' + 0 + ',' + roadWidth / 4 + ',' + (-roadWidth / 4) + 'v' + (-(grassHeight + roadWidth / 2)),
-    // form left to right
-    'M' + 0 + ',' + 0 + 'H' + svgWidth,
-    // from left to bottom
-    'M' + 0 + ',' + 0 + 'H' + grassWidth + 'q' + roadWidth / 4 + ',' + 0 + ',' + roadWidth / 4 + ',' + roadWidth / 4 + 'v' + grassHeight,
     // from top to left
     'M' + 0 + ',' + 0 + 'V' + grassHeight  + 'q' + 0 + ',' + roadWidth / 4 + ',' + (-roadWidth / 4) + ',' + roadWidth / 4 + 'h' + (-grassWidth),
     // from top to bottom
@@ -24,7 +18,13 @@ function generateRoadRoutes(svg, ns)
     // from bottom to top
     'M' + 0 + ',' + 0 + 'v' + (-svgHeight),
     // from bottom to left
-    'M' + 0 + ',' + 0 + 'v' + (-grassHeight - roadWidth / 2) + 'q' + 0 + ',' + (-roadWidth / 4) + ',' + (-roadWidth / 4) + ',' + (-roadWidth / 4) + 'h' + (-roadWidth / 2 - grassWidth)
+    'M' + 0 + ',' + 0 + 'v' + (-grassHeight - roadWidth / 2) + 'q' + 0 + ',' + (-roadWidth / 4) + ',' + (-roadWidth / 4) + ',' + (-roadWidth / 4) + 'h' + (-roadWidth / 2 - grassWidth),
+    // from left to top
+    'M' + 0 + ',' + 0 + 'H' + (grassWidth + roadWidth / 2) + 'q' + roadWidth / 4 + ',' + 0 + ',' + roadWidth / 4 + ',' + (-roadWidth / 4) + 'v' + (-(grassHeight + roadWidth / 2)),
+    // form left to right
+    'M' + 0 + ',' + 0 + 'H' + svgWidth,
+    // from left to bottom
+    'M' + 0 + ',' + 0 + 'H' + grassWidth + 'q' + roadWidth / 4 + ',' + 0 + ',' + roadWidth / 4 + ',' + roadWidth / 4 + 'v' + grassHeight
   ]
 
   var roadRoutes = []
@@ -57,7 +57,7 @@ function Car()
   this.route = null
   this.svgElement = null
 
-  this.init = (partOfCrossroads) => {
+  this.init = (partOfCrossroads, route) => {
     var typeRoad = null
     switch (partOfCrossroads) {
       case 'top':
@@ -82,7 +82,7 @@ function Car()
         break
     }
 
-    this.route = 11
+    this.route = route
   }
 
   this.draw = (svg, ns) => {
@@ -98,4 +98,23 @@ function Car()
     svg.append(car)
     this.svgElement = car
   }
+}
+
+function generateCar(svg, ns)
+{
+  var car = new Car()
+  var carTypeLabels = ['top', 'right', 'bottom', 'left']
+  var carType = getRandomInt(0, 4)
+  var carTypeLabel = carTypeLabels[carType]
+  var route = carType * 3 + getRandomInt(0, 3)
+
+  car.init(carTypeLabel, route)
+  car.draw(svg, ns)
+
+  activeCars.push(car)
+}
+
+function getRandomInt(min, max)
+{
+  return Math.floor(Math.random() * (max - min)) + min
 }
