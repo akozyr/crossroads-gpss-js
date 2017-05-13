@@ -56,8 +56,9 @@ function Car()
   this.deltaTime = 1 / duration
   this.route = null
   this.svgElement = null
+  this.carId = 0
 
-  this.init = (partOfCrossroads, route) => {
+  this.init = (partOfCrossroads, route, carId) => {
     var typeRoad = null
     switch (partOfCrossroads) {
       case 'top':
@@ -83,6 +84,7 @@ function Car()
     }
 
     this.route = route
+    this.carId = carId
   }
 
   this.draw = (svg, ns) => {
@@ -92,15 +94,20 @@ function Car()
     car.setAttribute('cy', this.startY)
     car.setAttribute('r', radius)
     car.setAttribute('fill', carColor)
+    car.setAttribute('id', 'car_' + this.carId)
 
     car.transform.baseVal.appendItem(svg.createSVGTransform())
 
     svg.append(car)
     this.svgElement = car
   }
+
+  this.destroy = () => {
+    document.getElementById('car_' + this.carId).remove()
+  }
 }
 
-function generateCar(svg, ns)
+function generateCar(svg, ns, carId)
 {
   var car = new Car()
   var carTypeLabels = ['top', 'right', 'bottom', 'left']
@@ -108,7 +115,7 @@ function generateCar(svg, ns)
   var carTypeLabel = carTypeLabels[carType]
   var route = carType * 3 + getRandomInt(0, 3)
 
-  car.init(carTypeLabel, route)
+  car.init(carTypeLabel, route, carId)
   car.draw(svg, ns)
 
   activeCars.push(car)
