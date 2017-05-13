@@ -38,7 +38,10 @@ function generateRoadRoutes(svg, ns)
     // pathElement.setAttribute('stroke-width', 3)
 
     svg.append(pathElement)
-    roadRoutes.push(pathElement)
+    roadRoutes.push({
+      length: pathElement.getTotalLength(),
+      path: pathElement
+    })
   }
 
   return roadRoutes
@@ -52,6 +55,7 @@ function Car()
 
   this.startX = 0
   this.startY = 0
+  this.roadDirection = null
   this.currentTime = 0
   this.deltaTime = 1 / duration
   this.route = null
@@ -59,27 +63,26 @@ function Car()
   this.carId = 0
 
   this.init = (partOfCrossroads, route, carId) => {
-    var typeRoad = null
     switch (partOfCrossroads) {
       case 'top':
         this.startX = grassWidth + roadWidth / 4
         this.startY = 0
-        typeRoad = 0
+        this.roadDirection = 0
         break
       case 'right':
         this.startX = svgWidth
         this.startY = grassHeight + roadWidth / 4
-        typeRoad = 1
+        this.roadDirection = 1
         break
       case 'bottom':
         this.startX = grassWidth + roadWidth * 0.75
         this.startY = svgHeight
-        typeRoad = 2
+        this.roadDirection = 2
         break
       case 'left':
         this.startX = 0
         this.startY = grassHeight + roadWidth * 0.75
-        typeRoad = 4
+        this.roadDirection = 3
         break
     }
 
@@ -100,6 +103,11 @@ function Car()
 
     svg.append(car)
     this.svgElement = car
+  }
+
+  this.move = (point) => {
+    this.svgElement.transform.baseVal.getItem(0).setTranslate(point.x, point.y)
+    this.currentTime += this.deltaTime
   }
 
   this.destroy = () => {

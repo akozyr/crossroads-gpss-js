@@ -6,7 +6,7 @@ var requestAnimationFrameID = null
 function startAnimation()
 {
   // GPSS variables
-  var carsNumber = 20
+  var carsNumber = 10
   var carGenerationDelay = 300
   var trafficLightColorChangingTime = 2000
 
@@ -18,14 +18,10 @@ function startAnimation()
   }, carGenerationDelay)
 
   trafficLight = new TrafficLight()
-  trafficLight.changeLight()
-
-  var timertTrafficLight = setInterval(() => {
-    trafficLight.changeLight()
-  }, trafficLightColorChangingTime)
+  trafficLight.init(trafficLightColorChangingTime)
+  trafficLight.run()
 
   setTimeout(() => {
     clearInterval(timerCarId)
-    clearInterval(timertTrafficLight)
   }, carsNumber * carGenerationDelay)
 }

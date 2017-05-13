@@ -6,7 +6,25 @@ function TrafficLight()
   // 0 - red, 1 - yellow, 2 - green
   this.horizontalColor = 0
   this.verticalColor = 2
-  this.trafficLightColorChangingTime
+  this.trafficLightColorChangingTime = 0
+  this.timertTrafficLight = null
+
+  this.init = (trafficLightColorChangingTime) => {
+    this.trafficLightColorChangingTime = trafficLightColorChangingTime
+  }
+
+  this.run = () => {
+    var self = this
+
+    self.changeLight()
+    this.timertTrafficLight = setInterval(() => {
+      self.changeLight()
+    }, this.trafficLightColorChangingTime)
+  }
+
+  this.stop = () => {
+    clearInterval(this.timertTrafficLight)
+  }
 
   this.changeLight = () => {
     this.setVerticalGroupColor(1)
