@@ -1,16 +1,31 @@
 var roadRoutes = generateRoadRoutes(svg, ns)
+var trafficLight = null
 var activeCars = []
-var requestAnimationFrameID
+var requestAnimationFrameID = null
 
 function startAnimation()
 {
   // GPSS variables
-  var carsNumber = 10
-  var carGenerationDelay = 100
+  var carsNumber = 20
+  var carGenerationDelay = 300
+  var trafficLightColorChangingTime = 2000
 
   requestAnimationFrameID = requestAnimationFrame(step)
 
-  for (var i = 0; i < carsNumber; i++) {
-    setTimeout(generateCar(svg, ns, i), carGenerationDelay)
-  }
+  var currentCarId = 0
+  var timerCarId = setInterval(() => {
+    generateCar(svg, ns, currentCarId++)
+  }, carGenerationDelay)
+
+  trafficLight = new TrafficLight()
+  trafficLight.changeLight()
+
+  var timertTrafficLight = setInterval(() => {
+    trafficLight.changeLight()
+  }, trafficLightColorChangingTime)
+
+  setTimeout(() => {
+    clearInterval(timerCarId)
+    clearInterval(timertTrafficLight)
+  }, carsNumber * carGenerationDelay)
 }
