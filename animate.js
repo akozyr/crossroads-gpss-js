@@ -43,14 +43,18 @@ function step()
               break
             }
           }
+        } else if (trafficLight.horizontalColor == 0) {
+          var isTrafficAllowed = true
 
-          if (isTrafficAllowed) {
-            currentCar.move(point)
+          if (point.x - 10 < grassWidth) {
+            isTrafficAllowed = false
           }
         }
-      }
 
-      // currentCar.move(point)
+        if (isTrafficAllowed) {
+          currentCar.move(point)
+        }
+      }
     } else {
       currentCar.destroy()
       activeCars.splice(i, 1)
