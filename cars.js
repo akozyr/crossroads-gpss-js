@@ -50,7 +50,7 @@ function generateRoadRoutes(svg, ns)
 function Car()
 {
   const radius = 15
-  const carColor = 'blue'
+  const carColor = ['blue', 'fuchsia', 'gold', 'greenyellow']
   const duration = 100
 
   this.startX = 0
@@ -96,7 +96,7 @@ function Car()
     car.setAttribute('cx', this.startX)
     car.setAttribute('cy', this.startY)
     car.setAttribute('r', radius)
-    car.setAttribute('fill', carColor)
+    car.setAttribute('fill', carColor[this.roadDirection])
     car.setAttribute('id', 'car_' + this.carId)
 
     car.transform.baseVal.appendItem(svg.createSVGTransform())
@@ -119,7 +119,7 @@ function generateCar(svg, ns, carId)
 {
   var car = new Car()
   var carTypeLabels = ['top', 'right', 'bottom', 'left']
-  var carType = 1// getRandomInt(0, 4)
+  var carType = [1, 3][getRandomInt(0, 2)]// getRandomInt(0, 4)
   var carTypeLabel = carTypeLabels[carType]
   var route = carType * 3 + getRandomInt(0, 3)
 

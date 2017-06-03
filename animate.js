@@ -35,7 +35,7 @@ function step()
           var isTrafficAllowed = true
           for (var j = 0; j < coordsOfActiveCars.length; j++) {
             if (
-              (Math.abs(point.x - coordsOfActiveCars[j].x) + Math.abs(point.y - coordsOfActiveCars[j].y)) < 40
+              (Math.abs(absoluleCoordX - coordsOfActiveCars[j].x) + Math.abs(absoluleCoordY - coordsOfActiveCars[j].y)) < 40
               &&
               coordsOfActiveCars[j].car_id < currentCar.carId
             ) {
