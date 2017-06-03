@@ -9,6 +9,8 @@ function step()
       var point = roadRoutes[currentCar.route]
         .path.getPointAtLength(currentCar.currentTime * roadRoutes[currentCar.route].length)
 
+      coordsOfActiveCars.push({ x: point.x, y: point.y, car_id: currentCar.carId })
+
       // green color
       // if (
       //   (currentCar.roadDirection == 1 || currentCar.roadDirection == 3) && trafficLight.horizontalColor == 2 ||
@@ -28,18 +30,23 @@ function step()
 
       if (currentCar.roadDirection == 3) {
         if (trafficLight.horizontalColor == 2) {
-            var isTrafficAllowed = true
-            for (var j = 0; j < coordsOfActiveCars.length; j++) {
-              if (Math.sqrt(Math.pow(point.x - coordsOfActiveCars[j].x, 2) + Math.pow(point.y - coordsOfActiveCars[j].y, 2)) < 20) {
-                isTrafficAllowed = false
-                break
-              }
+          var isTrafficAllowed = true
+          for (var j = 0; j < coordsOfActiveCars.length; j++) {
+            if (
+              (Math.abs(point.x - coordsOfActiveCars[j].x) + Math.abs(point.y - coordsOfActiveCars[j].y)) < 40
+              &&
+              ((point.x - coordsOfActiveCars[j].x) <= 0 || (point.y - coordsOfActiveCars[j].y) <= 0)
+              &&
+              coordsOfActiveCars[j].car_id < currentCar.carId
+            ) {
+              isTrafficAllowed = false
+              break
             }
+          }
 
-            if (isTrafficAllowed) {
-              currentCar.move(point)
-              coordsOfActiveCars.push({ x: point.x, y: point.y })
-            }
+          if (isTrafficAllowed) {
+            currentCar.move(point)
+          }
         }
       }
 

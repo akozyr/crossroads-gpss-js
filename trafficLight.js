@@ -4,8 +4,8 @@ function TrafficLight()
 
   // possible values:
   // 0 - red, 1 - yellow, 2 - green
-  this.horizontalColor = 0
-  this.verticalColor = 2
+  this.horizontalColor = 2
+  this.verticalColor = 0
   this.trafficLightColorChangingTime = 0
   this.timertTrafficLight = null
 
