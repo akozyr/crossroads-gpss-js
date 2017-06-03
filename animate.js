@@ -11,7 +11,6 @@ function step()
 
       var absoluleCoordX = point.x >= 0 ? point.x : (svgWidth - point.x)
       var absoluleCoordY = point.y >= 0 ? point.y : (svgWidth - point.y)
-      coordsOfActiveCars.push({ x: absoluleCoordX, y: absoluleCoordY, car_id: currentCar.carId })
 
       // green color
       // if (
@@ -36,8 +35,6 @@ function step()
           for (var j = 0; j < coordsOfActiveCars.length; j++) {
             if (
               (Math.abs(absoluleCoordX - coordsOfActiveCars[j].x) + Math.abs(absoluleCoordY - coordsOfActiveCars[j].y)) < 40
-              &&
-              coordsOfActiveCars[j].car_id < currentCar.carId
             ) {
               isTrafficAllowed = false
               break
@@ -62,8 +59,6 @@ function step()
           for (var j = 0; j < coordsOfActiveCars.length; j++) {
             if (
               (Math.abs(absoluleCoordX - coordsOfActiveCars[j].x) + Math.abs(absoluleCoordY - coordsOfActiveCars[j].y)) < 40
-              &&
-              coordsOfActiveCars[j].car_id < currentCar.carId
             ) {
               isTrafficAllowed = false
               break
@@ -81,6 +76,8 @@ function step()
           currentCar.move(point)
         }
       }
+
+      coordsOfActiveCars.push({ x: absoluleCoordX, y: absoluleCoordY, car_id: currentCar.carId })
     } else {
       currentCar.destroy()
       activeCars.splice(i, 1)
