@@ -84,5 +84,7 @@ function step()
     }
   }
 
-  requestAnimationFrameID = requestAnimationFrame(step)
+  setTimeout(() => {
+    requestAnimationFrameID = requestAnimationFrame(step)
+  }, 50)
 }
