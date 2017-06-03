@@ -3,6 +3,9 @@ var trafficLight = null
 var activeCars = []
 var requestAnimationFrameID = null
 
+// queues
+var leftOutputQueue = []
+
 function startAnimation()
 {
   // GPSS variables
