@@ -9,7 +9,7 @@ var leftOutputQueue = []
 function startAnimation()
 {
   // GPSS variables
-  var carsNumber = 10
+  var carsNumber = 6
   var carGenerationDelay = 300
   var trafficLightColorChangingTime = 2000
 

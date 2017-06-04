@@ -126,6 +126,8 @@ function generateCar(svg, ns, carId)
   car.init(carTypeLabel, route, carId)
   car.draw(svg, ns)
 
+  console.log(carId, ' -> ', carType)
+
   activeCars.push(car)
 }
 
