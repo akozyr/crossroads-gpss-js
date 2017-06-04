@@ -9,32 +9,17 @@ function step()
       var point = roadRoutes[currentCar.route]
         .path.getPointAtLength(currentCar.currentTime * roadRoutes[currentCar.route].length)
 
-      var absoluleCoordX = point.x >= 0 ? point.x : (svgWidth - point.x)
-      var absoluleCoordY = point.y >= 0 ? point.y : (svgWidth - point.y)
+      var currentCarClientRect = currentCar.svgElement.getBoundingClientRect()
 
-      // green color
-      // if (
-      //   (currentCar.roadDirection == 1 || currentCar.roadDirection == 3) && trafficLight.horizontalColor == 2 ||
-      //   (currentCar.roadDirection == 0 || currentCar.roadDirection == 2) && trafficLight.verticalColor == 2
-      // ) {
-      //   currentCar.move(point)
-      // } else { // red color
-      //   if (
-      //     currentCar.roadDirection == 0 && point.y < grassHeight ||
-      //     currentCar.roadDirection == 2 && Math.abs(point.y) < grassHeight ||
-      //     currentCar.roadDirection == 1 && Math.abs(point.x) < grassWidth ||
-      //     currentCar.roadDirection == 3 && point.x < grassWidth
-      //   ) {
-      //     currentCar.move(point)
-      //   }
-      // }
+      var absoluleCoordX = currentCarClientRect.left + currentCarClientRect.width / 2 - svgLeft
+      var absoluleCoordY = currentCarClientRect.top + currentCarClientRect.height / 2 - svgTop
 
       if (currentCar.roadDirection == 3) {
         if (trafficLight.horizontalColor == 2) {
           var isTrafficAllowed = true
           for (var j = 0; j < coordsOfActiveCars.length; j++) {
             if (
-              (Math.abs(absoluleCoordX - coordsOfActiveCars[j].x) + Math.abs(absoluleCoordY - coordsOfActiveCars[j].y)) < 40
+              (Math.abs(absoluleCoordX - coordsOfActiveCars[j].x) + Math.abs(absoluleCoordY - coordsOfActiveCars[j].y)) < 35
             ) {
               isTrafficAllowed = false
               break
@@ -58,7 +43,7 @@ function step()
           var isTrafficAllowed = true
           for (var j = 0; j < coordsOfActiveCars.length; j++) {
             if (
-              (Math.abs(absoluleCoordX - coordsOfActiveCars[j].x) + Math.abs(absoluleCoordY - coordsOfActiveCars[j].y)) < 40
+              (Math.abs(absoluleCoordX - coordsOfActiveCars[j].x) + Math.abs(absoluleCoordY - coordsOfActiveCars[j].y)) < 35
             ) {
               isTrafficAllowed = false
               break
@@ -77,7 +62,7 @@ function step()
         }
       }
 
-      coordsOfActiveCars.push({ x: absoluleCoordX, y: absoluleCoordY, car_id: currentCar.carId })
+      coordsOfActiveCars.push({ x: absoluleCoordX, y: absoluleCoordY })
     } else {
       currentCar.destroy()
       activeCars.splice(i, 1)

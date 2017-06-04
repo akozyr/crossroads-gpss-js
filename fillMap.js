@@ -5,6 +5,11 @@ var svg = document.querySelector('svg')
 svg.setAttribute('width', svgWidth)
 svg.setAttribute('height', svgHeight)
 
+var svgClientRect = svg.getBoundingClientRect()
+
+const svgTop = svgClientRect.top
+const svgLeft = svgClientRect.left
+
 // draw the border
 var ns = 'http://www.w3.org/2000/svg'
 var rect = document.createElementNS(ns, 'rect')
