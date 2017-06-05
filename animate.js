@@ -63,6 +63,13 @@ function step()
             ' y cond = ', checkYNeighbor
           )
 
+          // if (distance < 50) {
+          //   if (xDirectionSign != 0 && yDirectionSign != 0 && bufCoordsOfActiveCars[j].y_sign == 0) {
+          //     isTrafficAllowed = false
+          //     break
+          //   }
+          // }
+
           if (distance < 40) {
             if (xDirectionSign != 0 && yDirectionSign != 0) {
               if (checkXNeighbor || checkYNeighbor) {
@@ -70,9 +77,7 @@ function step()
                 break
               }
             } else if (xDirectionSign != 0) {
-              if (yDirectionSign == 0 && bufCoordsOfActiveCars[j].y_sign != 0) {
-
-              } else if (checkXNeighbor) {
+              if (checkXNeighbor) {
                 isTrafficAllowed = false
                 break
               }
@@ -97,7 +102,7 @@ function step()
     }
   }
 
-  alert('step')
+  // alert('step')
 
   setTimeout(() => {
     requestAnimationFrameID = requestAnimationFrame(step)
