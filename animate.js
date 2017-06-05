@@ -47,10 +47,15 @@ function step()
           var checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < bufCoordsOfActiveCars[j].y) : (absoluleCoordY > bufCoordsOfActiveCars[j].y)
 
           if (distance < 35) {
-            console.log('id = ', bufCoordsOfActiveCars[j].id, ': ', checkXNeighbor, checkYNeighbor)
+            console.log(
+              'id = ', bufCoordsOfActiveCars[j].id, ': ',
+              'distance = ', distance,
+              ' x cond = ', checkXNeighbor,
+              ' y cond = ', checkYNeighbor
+            )
 
             if (xDirectionSign != 0 && yDirectionSign != 0) {
-              if (checkXNeighbor && checkYNeighbor) {
+              if (checkXNeighbor || checkYNeighbor) {
                 isTrafficAllowed = false
                 break
               }
@@ -80,7 +85,7 @@ function step()
     }
   }
 
-  alert('step')
+  // alert('step')
 
   setTimeout(() => {
     requestAnimationFrameID = requestAnimationFrame(step)
