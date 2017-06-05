@@ -3,12 +3,19 @@ function step()
   var coordsOfActiveCars = []
 
   for (var i = 0; i < activeCars.length; i++) {
-    var currentCarClientRect = activeCars[i].svgElement.getBoundingClientRect()
+    var currentCar = activeCars[i]
+    var currentCarClientRect = currentCar.svgElement.getBoundingClientRect()
 
     var absoluleCoordX = currentCarClientRect.left + currentCarClientRect.width / 2 - svgLeft
     var absoluleCoordY = currentCarClientRect.top + currentCarClientRect.height / 2 - svgTop
 
-    coordsOfActiveCars.push({ x: absoluleCoordX, y: absoluleCoordY, id: activeCars[i].carId })
+    var point = roadRoutes[currentCar.route]
+        .path.getPointAtLength(currentCar.currentTime * roadRoutes[currentCar.route].length)
+
+    var xDirectionSign = Math.sign(Math.round(point.x))
+    var yDirectionSign = Math.sign(Math.round(point.y))
+
+    coordsOfActiveCars.push({ x: absoluleCoordX, y: absoluleCoordY, id: activeCars[i].carId, x_sign: xDirectionSign, y_sign: yDirectionSign })
   }
 
   for (var i = 0; i < activeCars.length; i++) {
@@ -40,27 +47,32 @@ function step()
         }
 
         for (var j = 0; j < bufCoordsOfActiveCars.length; j++) {
-          var distance = Math.abs(absoluleCoordX - bufCoordsOfActiveCars[j].x)
-            + Math.abs(absoluleCoordY - bufCoordsOfActiveCars[j].y)
+          // var distance = Math.abs(absoluleCoordX - bufCoordsOfActiveCars[j].x)
+          //   + Math.abs(absoluleCoordY - bufCoordsOfActiveCars[j].y)
+
+          var distance = Math.sqrt(Math.pow(absoluleCoordX - bufCoordsOfActiveCars[j].x, 2)
+            + Math.pow(absoluleCoordY - bufCoordsOfActiveCars[j].y, 2))
 
           var checkXNeighbor = xDirectionSign > 0 ? (absoluleCoordX < bufCoordsOfActiveCars[j].x) : (absoluleCoordX > bufCoordsOfActiveCars[j].x)
           var checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < bufCoordsOfActiveCars[j].y) : (absoluleCoordY > bufCoordsOfActiveCars[j].y)
 
-          if (distance < 35) {
-            console.log(
-              'id = ', bufCoordsOfActiveCars[j].id, ': ',
-              'distance = ', distance,
-              ' x cond = ', checkXNeighbor,
-              ' y cond = ', checkYNeighbor
-            )
+          console.log(
+            'id = ', bufCoordsOfActiveCars[j].id, ': ',
+            'distance = ', distance,
+            ' x cond = ', checkXNeighbor,
+            ' y cond = ', checkYNeighbor
+          )
 
+          if (distance < 40) {
             if (xDirectionSign != 0 && yDirectionSign != 0) {
               if (checkXNeighbor || checkYNeighbor) {
                 isTrafficAllowed = false
                 break
               }
             } else if (xDirectionSign != 0) {
-              if (checkXNeighbor) {
+              if (yDirectionSign == 0 && bufCoordsOfActiveCars[j].y_sign != 0) {
+
+              } else if (checkXNeighbor) {
                 isTrafficAllowed = false
                 break
               }
@@ -85,7 +97,7 @@ function step()
     }
   }
 
-  // alert('step')
+  alert('step')
 
   setTimeout(() => {
     requestAnimationFrameID = requestAnimationFrame(step)
