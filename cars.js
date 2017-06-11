@@ -62,6 +62,9 @@ function Car()
   this.svgElement = null
   this.carId = 0
 
+  // it's used for processing of output parameters
+  this.movingTime = 0
+
   this.init = (partOfCrossroads, route, carId) => {
     switch (partOfCrossroads) {
       case 'top':
@@ -123,10 +126,10 @@ function generateCar(svg, ns, carId)
   var carTypeLabel = carTypeLabels[carType]
   var route = carType * 3 + getRandomInt(0, 3)
 
+  outputParameters.addElementToRoute(route)
+
   car.init(carTypeLabel, route, carId)
   car.draw(svg, ns)
-
-  console.log(carId, ' -> ', carType)
 
   activeCars.push(car)
 }

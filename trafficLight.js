@@ -24,6 +24,9 @@ function TrafficLight()
 
   this.stop = () => {
     clearInterval(this.timertTrafficLight)
+
+    this.setVerticalGroupColor(3)
+    this.setHorizontalGroupColor(3)
   }
 
   this.changeLight = () => {
@@ -60,7 +63,7 @@ function TrafficLight()
   }
 
   this.getColorLabel = (colorId) => {
-    var colorLabels = ['red', 'yellow', 'green']
+    var colorLabels = ['red', 'yellow', 'green', 'white']
 
     return colorLabels[colorId]
   }

@@ -3,12 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>GPSS Crossroads Model</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"
+    ></script>
 </head>
 <body>
-    <svg></svg>
-    <button onclick="startAnimation()">Run</button>
+    <div class="row">
+        <div class="col-md-5">
+            <svg></svg>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Input system parameters</div>
+                <div class="panel-body">
+                    <button class="btn btn-primary" onclick="startAnimation()">Run</button>
+                </div>
+            </div>
+            <div id="output-parameters" class="panel panel-default" style="display: none">
+                <div class="panel-heading">Output system parameters</div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            Total working system time:
+                            <span id="total-time">0.00</span>
+                        </li>
+                        <li class="list-group-item">
+                            Average time of car moving:
+                            <span id="average-time-of-car-moving">0.00</span>
+                        </li>
+                    </ul>
+                    <table id="route-parameters" class="table table-striped">
+                        <caption>Parameters of routes</caption>
+                        <thead>
+                            <tr>
+                                <th>Route name</th>
+                                <th>Max elements</th>
+                                <th>Ave. time</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="./fillMap.js"></script>
+    <script src="./outputParameters.js"></script>
     <script src="./trafficLight.js"></script>
     <script src="./cars.js"></script>
     <!-- <script src="./queueOfCars.js"></script> -->

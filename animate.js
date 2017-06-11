@@ -1,5 +1,22 @@
 function step()
 {
+  if (isAnimationStarted && activeCars.length == 0) {
+    trafficLight.stop()
+    stopAnimation()
+    isAnimationStarted = false
+
+    outputParameters.fillOutForm()
+
+    return
+  }
+
+  outputParameters.increaseTotalTime()
+
+  runOnStep()
+}
+
+function runOnStep()
+{
   var coordsOfActiveCars = []
 
   for (var i = 0; i < activeCars.length; i++) {
@@ -22,6 +39,8 @@ function step()
     var currentCar = activeCars[i]
 
     if (currentCar.currentTime <= 1) {
+      // for output parameters
+      currentCar.movingTime++
       // remove a certain car from coordsOfActiveCars
       var bufCoordsOfActiveCars = coordsOfActiveCars.slice()
       bufCoordsOfActiveCars.splice(i, 1)
@@ -115,6 +134,8 @@ function step()
       }
     } else {
       currentCar.destroy()
+      outputParameters.setCarTime(currentCar.movingTime)
+      outputParameters.setRouteTime(currentCar.route, currentCar.movingTime)
       activeCars.splice(i, 1)
     }
   }
