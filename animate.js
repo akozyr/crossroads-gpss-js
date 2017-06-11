@@ -56,12 +56,12 @@ function step()
           var checkXNeighbor = xDirectionSign > 0 ? (absoluleCoordX < bufCoordsOfActiveCars[j].x) : (absoluleCoordX > bufCoordsOfActiveCars[j].x)
           var checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < bufCoordsOfActiveCars[j].y) : (absoluleCoordY > bufCoordsOfActiveCars[j].y)
 
-          console.log(
-            'id = ', bufCoordsOfActiveCars[j].id, ': ',
-            'distance = ', distance,
-            ' x cond = ', checkXNeighbor,
-            ' y cond = ', checkYNeighbor
-          )
+          // console.log(
+          //   'id = ', bufCoordsOfActiveCars[j].id, ': ',
+          //   'distance = ', distance,
+          //   ' x cond = ', checkXNeighbor,
+          //   ' y cond = ', checkYNeighbor
+          // )
 
           // if (distance < 50) {
           //   if (xDirectionSign != 0 && yDirectionSign != 0 && bufCoordsOfActiveCars[j].y_sign == 0) {
@@ -70,8 +70,25 @@ function step()
           //   }
           // }
 
-          if (distance < 40) {
-            if (xDirectionSign != 0 && yDirectionSign != 0) {
+          if (distance < 45) {
+            if (
+              (xDirectionSign + bufCoordsOfActiveCars[j].x_sign) == 0 &&
+              Math.abs(yDirectionSign + bufCoordsOfActiveCars[j].y_sign) == 1
+            ) {
+              if (
+                yDirectionSign == 0 && Math.abs(absoluleCoordY - bufCoordsOfActiveCars[j].y) < 25
+              ) {
+                isTrafficAllowed = false
+                break
+              } else if (
+                (yDirectionSign == 1 || yDirectionSign == -1) && Math.abs(absoluleCoordX - bufCoordsOfActiveCars[j].x) < 25
+              ) {
+                isTrafficAllowed = false
+                break
+              }
+
+              // console.log('left turning: ', absoluleCoordX - bufCoordsOfActiveCars[j].x, absoluleCoordY - bufCoordsOfActiveCars[j].y)
+            } else if (xDirectionSign != 0 && yDirectionSign != 0) {
               if (checkXNeighbor || checkYNeighbor) {
                 isTrafficAllowed = false
                 break
@@ -90,7 +107,7 @@ function step()
           }
         }
 
-        console.log(currentCar.carId, isTrafficAllowed, xDirectionSign, yDirectionSign)
+        // console.log(currentCar.carId, isTrafficAllowed, xDirectionSign, yDirectionSign)
 
         if (isTrafficAllowed) {
           currentCar.move(point)
@@ -104,7 +121,7 @@ function step()
 
   // alert('step')
 
-  setTimeout(() => {
+  // setTimeout(() => {
     requestAnimationFrameID = requestAnimationFrame(step)
-  }, 50)
+  // }, 50)
 }
