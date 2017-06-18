@@ -32,7 +32,15 @@ function runOnStep()
     var xDirectionSign = Math.sign(Math.round(point.x))
     var yDirectionSign = Math.sign(Math.round(point.y))
 
-    coordsOfActiveCars.push({ x: absoluleCoordX, y: absoluleCoordY, id: activeCars[i].carId, x_sign: xDirectionSign, y_sign: yDirectionSign })
+    coordsOfActiveCars.push({
+      x: absoluleCoordX,
+      y: absoluleCoordY,
+      id: activeCars[i].carId,
+      x_sign: xDirectionSign,
+      y_sign: yDirectionSign,
+      route: activeCars[i].route,
+      road_dir: activeCars[i].roadDirection
+    })
   }
 
   for (var i = 0; i < activeCars.length; i++) {
@@ -75,50 +83,64 @@ function runOnStep()
           var checkXNeighbor = xDirectionSign > 0 ? (absoluleCoordX < bufCoordsOfActiveCars[j].x) : (absoluleCoordX > bufCoordsOfActiveCars[j].x)
           var checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < bufCoordsOfActiveCars[j].y) : (absoluleCoordY > bufCoordsOfActiveCars[j].y)
 
-          // console.log(
-          //   'id = ', bufCoordsOfActiveCars[j].id, ': ',
-          //   'distance = ', distance,
-          //   ' x cond = ', checkXNeighbor,
-          //   ' y cond = ', checkYNeighbor
-          // )
+          console.log(
+            'id = ', bufCoordsOfActiveCars[j].id, ': ',
+            'distance = ', distance,
+            'route = ', bufCoordsOfActiveCars[j].route,
+            'road_dir = ', bufCoordsOfActiveCars[j].road_dir
+          )
 
-          // if (distance < 50) {
-          //   if (xDirectionSign != 0 && yDirectionSign != 0 && bufCoordsOfActiveCars[j].y_sign == 0) {
-          //     isTrafficAllowed = false
-          //     break
-          //   }
-          // }
-
-          if (distance < 45) {
+          if (distance < 40) {
             if (
-              (xDirectionSign + bufCoordsOfActiveCars[j].x_sign) == 0 &&
-              Math.abs(yDirectionSign + bufCoordsOfActiveCars[j].y_sign) == 1
+              (
+                3 == bufCoordsOfActiveCars[j].road_dir
+                &&
+                5 == currentCar.route
+                &&
+                currentCar.absoluleCoordY < svgHeight / 2
+              )
+              ||
+              (
+                1 == bufCoordsOfActiveCars[j].road_dir
+                &&
+                9 == currentCar.route
+                &&
+                currentCar.absoluleCoordY > svgHeight / 2
+              )
             ) {
-              if (
-                yDirectionSign == 0 && Math.abs(absoluleCoordY - bufCoordsOfActiveCars[j].y) < 25
-              ) {
-                isTrafficAllowed = false
-                break
-              } else if (
-                (yDirectionSign == 1 || yDirectionSign == -1) && Math.abs(absoluleCoordX - bufCoordsOfActiveCars[j].x) < 25
-              ) {
-                isTrafficAllowed = false
-                break
-              }
-
-              // console.log('left turning: ', absoluleCoordX - bufCoordsOfActiveCars[j].x, absoluleCoordY - bufCoordsOfActiveCars[j].y)
+              console.log('1 condition')
+              isTrafficAllowed = false
+              break
+            } else if (
+              (
+                3 == currentCar.roadDirection
+                &&
+                5 == bufCoordsOfActiveCars[j].route
+              )
+              ||
+              (
+                1 == currentCar.roadDirection
+                &&
+                9 == bufCoordsOfActiveCars[j].route
+              )
+            ) {
+              console.log('2 condition')
+              // to move car
             } else if (xDirectionSign != 0 && yDirectionSign != 0) {
               if (checkXNeighbor || checkYNeighbor) {
+                console.log('3 condition')
                 isTrafficAllowed = false
                 break
               }
             } else if (xDirectionSign != 0) {
               if (checkXNeighbor) {
+                console.log('4 condition')
                 isTrafficAllowed = false
                 break
               }
             } else if (yDirectionSign != 0) {
               if (checkYNeighbor) {
+                console.log('5 condition')
                 isTrafficAllowed = false
                 break
               }
@@ -126,7 +148,14 @@ function runOnStep()
           }
         }
 
-        // console.log(currentCar.carId, isTrafficAllowed, xDirectionSign, yDirectionSign)
+        console.log(
+          currentCar.carId,
+          isTrafficAllowed,
+          xDirectionSign,
+          yDirectionSign,
+          currentCar.route,
+          currentCar.roadDirection
+        )
 
         if (isTrafficAllowed) {
           currentCar.move(point)
