@@ -10,8 +10,8 @@ var outputParameters = null
 function startAnimation()
 {
   // GPSS variables
-  var carsNumber = 10
-  var carGenerationDelay = 300
+  var carsNumber = 20
+  var carGenerationDelay = 500
   var trafficLightColorChangingTime = 2000
 
   requestAnimationFrameID = requestAnimationFrame(step)

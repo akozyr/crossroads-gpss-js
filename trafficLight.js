@@ -1,6 +1,6 @@
 function TrafficLight()
 {
-  const yellowDuration = 300
+  const yellowDuration = 500
 
   // possible values:
   // 0 - red, 1 - yellow, 2 - green
