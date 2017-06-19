@@ -172,9 +172,6 @@ function runOnStep()
         }
 
         for (var j = 0; j < bufCoordsOfActiveCars.length; j++) {
-          // var distance = Math.abs(absoluleCoordX - bufCoordsOfActiveCars[j].x)
-          //   + Math.abs(absoluleCoordY - bufCoordsOfActiveCars[j].y)
-
           var distance = Math.sqrt(Math.pow(absoluleCoordX - bufCoordsOfActiveCars[j].x, 2)
             + Math.pow(absoluleCoordY - bufCoordsOfActiveCars[j].y, 2))
 
@@ -191,19 +188,19 @@ function runOnStep()
           if (distance < 40) {
             if (
               (
-                3 == bufCoordsOfActiveCars[j].road_dir
+                0 == bufCoordsOfActiveCars[j].road_dir
                 &&
-                5 == currentCar.route
+                8 == currentCar.route
                 &&
-                currentCar.absoluleCoordY < svgHeight / 2
+                currentCar.absoluleCoordX >= svgWidth / 2
               )
               ||
               (
-                1 == bufCoordsOfActiveCars[j].road_dir
+                2 == bufCoordsOfActiveCars[j].road_dir
                 &&
-                9 == currentCar.route
+                2 == currentCar.route
                 &&
-                currentCar.absoluleCoordY > svgHeight / 2
+                currentCar.absoluleCoordX <= svgWidth / 2
               )
             ) {
               console.log('1 condition')
@@ -211,15 +208,15 @@ function runOnStep()
               break
             } else if (
               (
-                3 == currentCar.roadDirection
+                0 == currentCar.roadDirection
                 &&
-                5 == bufCoordsOfActiveCars[j].route
+                8 == bufCoordsOfActiveCars[j].route
               )
               ||
               (
-                1 == currentCar.roadDirection
+                2 == currentCar.roadDirection
                 &&
-                9 == bufCoordsOfActiveCars[j].route
+                2 == bufCoordsOfActiveCars[j].route
               )
             ) {
               console.log('2 condition')
