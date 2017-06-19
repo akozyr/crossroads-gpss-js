@@ -18,10 +18,36 @@
             <svg></svg>
         </div>
         <div class="col-md-6">
-            <div class="panel panel-default">
+            <div id="input-parameters" class="panel panel-default">
                 <div class="panel-heading">Input system parameters</div>
                 <div class="panel-body">
-                    <button class="btn btn-primary" onclick="startAnimation()">Run</button>
+                    <form>
+                        <div class="form-group">
+                            <label for="cars-number">Cars Number:</label>
+                            <input
+                                class="form-control"
+                                id="cars-number"
+                                value="20"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="car-generation-delay">Car Generation Delay:</label>
+                            <input
+                                class="form-control"
+                                id="car-generation-delay"
+                                value="500"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="color-changing-time">Trafficlight Color Changing Time:</label>
+                            <input
+                                class="form-control"
+                                id="color-changing-time"
+                                value="2000"
+                            >
+                        </div>
+                        <button class="btn btn-primary" onclick="startAnimation()">Run</button>
+                    </form>
                 </div>
             </div>
             <div id="output-parameters" class="panel panel-default" style="display: none">
@@ -54,6 +80,7 @@
     </div>
 
     <script src="./fillMap.js"></script>
+    <script src="./inputParameters.js"></script>
     <script src="./outputParameters.js"></script>
     <script src="./trafficLight.js"></script>
     <script src="./cars.js"></script>
