@@ -122,7 +122,7 @@ function generateCar(svg, ns, carId)
 {
   var car = new Car()
   var carTypeLabels = ['top', 'right', 'bottom', 'left']
-  var carType = [0, 2][getRandomInt(0, 2)]// getRandomInt(0, 4)
+  var carType = /*[0, 2][getRandomInt(0, 2)]*/getRandomInt(0, 4)
   var carTypeLabel = carTypeLabels[carType]
   var route = carType * 3 + getRandomInt(0, 3)
 
