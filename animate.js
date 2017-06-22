@@ -35,9 +35,6 @@ function runOnStep()
     coordsOfActiveCars.push({
       x: absoluleCoordX,
       y: absoluleCoordY,
-      id: activeCars[i].carId,
-      x_sign: xDirectionSign,
-      y_sign: yDirectionSign,
       route: activeCars[i].route,
       road_dir: activeCars[i].roadDirection
     })
@@ -67,28 +64,16 @@ function runOnStep()
       if (currentCar.roadDirection == 1 || currentCar.roadDirection == 3) {
         var isTrafficAllowed = true
 
-        if (trafficLight.horizontalColor == 0) {
-          if ((Math.abs(point.x) > grassWidth * 0.9) && Math.abs(point.x) < grassWidth) {
-            isTrafficAllowed = false
-          }
+        if (trafficLight.horizontalColor == 0 && (Math.abs(point.x) > grassWidth * 0.9) && Math.abs(point.x) < grassWidth) {
+          isTrafficAllowed = false
         }
 
         for (var j = 0; j < bufCoordsOfActiveCars.length; j++) {
-          // var distance = Math.abs(absoluleCoordX - bufCoordsOfActiveCars[j].x)
-          //   + Math.abs(absoluleCoordY - bufCoordsOfActiveCars[j].y)
-
           var distance = Math.sqrt(Math.pow(absoluleCoordX - bufCoordsOfActiveCars[j].x, 2)
             + Math.pow(absoluleCoordY - bufCoordsOfActiveCars[j].y, 2))
 
           var checkXNeighbor = xDirectionSign > 0 ? (absoluleCoordX < bufCoordsOfActiveCars[j].x) : (absoluleCoordX > bufCoordsOfActiveCars[j].x)
           var checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < bufCoordsOfActiveCars[j].y) : (absoluleCoordY > bufCoordsOfActiveCars[j].y)
-
-          // console.log(
-          //   'id = ', bufCoordsOfActiveCars[j].id, ': ',
-          //   'distance = ', distance,
-          //   'route = ', bufCoordsOfActiveCars[j].route,
-          //   'road_dir = ', bufCoordsOfActiveCars[j].road_dir
-          // )
 
           if (distance < 40) {
             if (
@@ -108,7 +93,6 @@ function runOnStep()
                 currentCar.absoluleCoordY > svgHeight / 2
               )
             ) {
-              // console.log('1 condition')
               isTrafficAllowed = false
               break
             } else if (
@@ -124,38 +108,25 @@ function runOnStep()
                 9 == bufCoordsOfActiveCars[j].route
               )
             ) {
-              // console.log('2 condition')
-              // to move car
+              // move car
             } else if (xDirectionSign != 0 && yDirectionSign != 0) {
               if (checkXNeighbor || checkYNeighbor) {
-                // console.log('3 condition')
                 isTrafficAllowed = false
                 break
               }
             } else if (xDirectionSign != 0) {
               if (checkXNeighbor) {
-                // console.log('4 condition')
                 isTrafficAllowed = false
                 break
               }
             } else if (yDirectionSign != 0) {
               if (checkYNeighbor) {
-                // console.log('5 condition')
                 isTrafficAllowed = false
                 break
               }
             }
           }
         }
-
-        // console.log(
-        //   currentCar.carId,
-        //   isTrafficAllowed,
-        //   xDirectionSign,
-        //   yDirectionSign,
-        //   currentCar.route,
-        //   currentCar.roadDirection
-        // )
 
         if (isTrafficAllowed) {
           currentCar.move(point)
@@ -165,10 +136,8 @@ function runOnStep()
       if (currentCar.roadDirection == 0 || currentCar.roadDirection == 2) {
         var isTrafficAllowed = true
 
-        if (trafficLight.verticalColor == 0) {
-          if ((Math.abs(point.y) > grassHeight * 0.9) && Math.abs(point.y) < grassHeight) {
-            isTrafficAllowed = false
-          }
+        if (trafficLight.verticalColor == 0 && (Math.abs(point.y) > grassHeight * 0.9) && Math.abs(point.y) < grassHeight) {
+          isTrafficAllowed = false
         }
 
         for (var j = 0; j < bufCoordsOfActiveCars.length; j++) {
@@ -177,13 +146,6 @@ function runOnStep()
 
           var checkXNeighbor = xDirectionSign > 0 ? (absoluleCoordX < bufCoordsOfActiveCars[j].x) : (absoluleCoordX > bufCoordsOfActiveCars[j].x)
           var checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < bufCoordsOfActiveCars[j].y) : (absoluleCoordY > bufCoordsOfActiveCars[j].y)
-
-          // console.log(
-          //   'id = ', bufCoordsOfActiveCars[j].id, ': ',
-          //   'distance = ', distance,
-          //   'route = ', bufCoordsOfActiveCars[j].route,
-          //   'road_dir = ', bufCoordsOfActiveCars[j].road_dir
-          // )
 
           if (distance < 40) {
             if (
@@ -203,7 +165,6 @@ function runOnStep()
                 currentCar.absoluleCoordX <= svgWidth / 2
               )
             ) {
-              // console.log('1 condition')
               isTrafficAllowed = false
               break
             } else if (
@@ -219,38 +180,25 @@ function runOnStep()
                 2 == bufCoordsOfActiveCars[j].route
               )
             ) {
-              // console.log('2 condition')
-              // to move car
+              // move car
             } else if (xDirectionSign != 0 && yDirectionSign != 0) {
               if (checkXNeighbor || checkYNeighbor) {
-                // console.log('3 condition')
                 isTrafficAllowed = false
                 break
               }
             } else if (xDirectionSign != 0) {
               if (checkXNeighbor) {
-                // console.log('4 condition')
                 isTrafficAllowed = false
                 break
               }
             } else if (yDirectionSign != 0) {
               if (checkYNeighbor) {
-                // console.log('5 condition')
                 isTrafficAllowed = false
                 break
               }
             }
           }
         }
-
-        // console.log(
-        //   currentCar.carId,
-        //   isTrafficAllowed,
-        //   xDirectionSign,
-        //   yDirectionSign,
-        //   currentCar.route,
-        //   currentCar.roadDirection
-        // )
 
         if (isTrafficAllowed) {
           currentCar.move(point)
@@ -264,9 +212,5 @@ function runOnStep()
     }
   }
 
-  // alert('step')
-
-  // setTimeout(() => {
-    requestAnimationFrameID = requestAnimationFrame(step)
-  // }, 50)
+  requestAnimationFrameID = requestAnimationFrame(step)
 }

@@ -4,7 +4,7 @@ var activeCars = []
 var requestAnimationFrameID = null
 var isAnimationStarted = false
 
-// class for output system parameters processing
+// class for input system parameters processing
 var inputParameters = new InputParameters()
 inputParameters.init()
 // class for output system parameters processing
