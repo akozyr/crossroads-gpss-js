@@ -40,18 +40,24 @@ function InputParameters()
   }
 
   this.isValidFormData = (formData) => {
-    if (!(Number.isInteger(formData.cars_number) && formData.cars_number > 0)) {
-      return 'Cars Number must be Integer and greater than 0'
+    if (!(
+      Number.isInteger(formData.cars_number)
+      &&
+      formData.cars_number > 0
+      &&
+      formData.cars_number <= 150
+    )) {
+      return 'Cars Number must be Integer and greater than 0 and less or equal than 150'
     }
 
     if (!(
       Number.isInteger(formData.car_generation_delay)
       &&
-      formData.car_generation_delay >= 300
+      formData.car_generation_delay >= 500
       &&
       formData.car_generation_delay <= 700
     )) {
-      return 'Car Generation Delay must be Integer, greater or equal than 300 and less or equal than 700'
+      return 'Car Generation Delay must be Integer, greater or equal than 500 and less or equal than 700'
     }
 
     if (!(
