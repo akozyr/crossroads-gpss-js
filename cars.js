@@ -1,48 +1,49 @@
 function generateRoadRoutes(svg, ns)
 {
-  var roadRoutesData = [
+  const quarterOfRoadWidth = roadWidth / 4;
+
+  const roadRoutesData = [
     // from top to left
-    'M' + 0 + ',' + 0 + 'V' + grassHeight  + 'q' + 0 + ',' + roadWidth / 4 + ',' + (-roadWidth / 4) + ',' + roadWidth / 4 + 'h' + (-grassWidth),
+    `M0,0V${grassHeight}q0,${quarterOfRoadWidth},${-quarterOfRoadWidth},${quarterOfRoadWidth}h${-grassWidth}`,
     // from top to bottom
-    'M' + 0 + ',' + 0 + 'V' + svgHeight,
+    `M0,0V${svgHeight}`,
     // from top to right
-    'M' + 0 + ',' + 0 + 'V' + (grassHeight + roadWidth / 2) + 'q' + 0 + ',' + roadWidth / 4 + ',' + roadWidth / 4 + ',' + roadWidth / 4 + 'h' + (roadWidth / 2 + grassWidth),
+    `M0,0V${grassHeight + roadWidth / 2}q0,${quarterOfRoadWidth},${quarterOfRoadWidth},${quarterOfRoadWidth}h${roadWidth / 2 + grassWidth}`,
     // from right to top
-    'M' + 0 + ',' + 0 + 'h' + (-grassWidth) + 'q' + (-roadWidth / 4) + ',' + 0 + ',' + (-roadWidth / 4) + ',' + (-roadWidth / 4) + 'v' + (-grassHeight),
+    `M0,0h${-grassWidth}q${-quarterOfRoadWidth},0,${-quarterOfRoadWidth},${-quarterOfRoadWidth}v${-grassHeight}`,
     // from right to
-    'M' + 0 + ',' + 0 + 'H' + (-svgWidth),
+    `M0,0H${-svgWidth}`,
     // from right to bottom
-    'M' + 0 + ',' + 0 + 'h' + (-grassWidth - roadWidth / 2) + 'q' + (-roadWidth / 4) + ',' + 0 + ',' + (-roadWidth / 4) + ',' + roadWidth / 4  + 'v' + (roadWidth / 2 + grassHeight),
+    `M0,0h${-grassWidth - roadWidth / 2}q${-quarterOfRoadWidth},0,${-quarterOfRoadWidth},${quarterOfRoadWidth}v${roadWidth / 2 + grassHeight}`,
     // from bottom to right
-    'M' + 0 + ',' + 0 + 'v' + (-grassHeight) + 'q' + 0 + ',' + (-roadWidth / 4) + ',' + roadWidth / 4 + ',' + (-roadWidth / 4)  + 'h' + grassWidth,
+    `M0,0v${-grassHeight}q0,${-quarterOfRoadWidth},${quarterOfRoadWidth},${-quarterOfRoadWidth}h${grassWidth}`,
     // from bottom to top
-    'M' + 0 + ',' + 0 + 'v' + (-svgHeight),
+    `M0,0v${-svgHeight}`,
     // from bottom to left
-    'M' + 0 + ',' + 0 + 'v' + (-grassHeight - roadWidth / 2) + 'q' + 0 + ',' + (-roadWidth / 4) + ',' + (-roadWidth / 4) + ',' + (-roadWidth / 4) + 'h' + (-roadWidth / 2 - grassWidth),
+    `M0,0v${-grassHeight - roadWidth / 2}q0,${-quarterOfRoadWidth},${-quarterOfRoadWidth},${-quarterOfRoadWidth}h${-roadWidth / 2 - grassWidth}`,
     // from left to top
-    'M' + 0 + ',' + 0 + 'H' + (grassWidth + roadWidth / 2) + 'q' + roadWidth / 4 + ',' + 0 + ',' + roadWidth / 4 + ',' + (-roadWidth / 4) + 'v' + (-(grassHeight + roadWidth / 2)),
+    `M0,0H${grassWidth + roadWidth / 2}q${quarterOfRoadWidth},0,${quarterOfRoadWidth},${-quarterOfRoadWidth}v${-(grassHeight + roadWidth / 2)}`,
     // form left to right
-    'M' + 0 + ',' + 0 + 'H' + svgWidth,
+    `M0,0H${svgWidth}`,
     // from left to bottom
-    'M' + 0 + ',' + 0 + 'H' + grassWidth + 'q' + roadWidth / 4 + ',' + 0 + ',' + roadWidth / 4 + ',' + roadWidth / 4 + 'v' + grassHeight
+    `M0,0H${grassWidth}q${quarterOfRoadWidth},0,${quarterOfRoadWidth},${quarterOfRoadWidth}v${grassHeight}`
   ]
 
-  var roadRoutes = []
-  var pathElement = null
-  for (var i = 0; i < roadRoutesData.length; i++) {
-    pathElement = document.createElementNS(ns, 'path')
+  const roadRoutes = []
+  roadRoutesData.forEach((route) => {
+    const path = document.createElementNS(ns, 'path')
 
-    pathElement.setAttribute('d', roadRoutesData[i])
-    pathElement.setAttribute('fill', 'none')
-    // pathElement.setAttribute('stroke', 'red')
-    // pathElement.setAttribute('stroke-width', 3)
+    path.setAttribute('d', route)
+    path.setAttribute('fill', 'none')
+    // path.setAttribute('stroke', 'red')
+    // path.setAttribute('stroke-width', 3)
 
-    svg.append(pathElement)
+    svg.append(path)
     roadRoutes.push({
-      length: pathElement.getTotalLength(),
-      path: pathElement
+      length: path.getTotalLength(),
+      path
     })
-  }
+  })
 
   return roadRoutes
 }
@@ -94,7 +95,7 @@ function Car()
   }
 
   this.draw = (svg, ns) => {
-    var car = document.createElementNS(ns, 'circle')
+    const car = document.createElementNS(ns, 'circle')
 
     car.setAttribute('cx', this.startX)
     car.setAttribute('cy', this.startY)
@@ -120,11 +121,11 @@ function Car()
 
 function generateCar(svg, ns, carId)
 {
-  var car = new Car()
-  var carTypeLabels = ['top', 'right', 'bottom', 'left']
-  var carType = /*[0, 2][getRandomInt(0, 2)]*/getRandomInt(0, 4)
-  var carTypeLabel = carTypeLabels[carType]
-  var route = carType * 3 + getRandomInt(0, 3)
+  const car = new Car()
+  const carTypeLabels = ['top', 'right', 'bottom', 'left']
+  const carType = /*[0, 2][getRandomInt(0, 2)]*/getRandomInt(0, 4)
+  const carTypeLabel = carTypeLabels[carType]
+  const route = carType * 3 + getRandomInt(0, 3)
 
   outputParameters.addElementToRoute(route)
 
