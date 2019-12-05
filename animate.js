@@ -23,8 +23,8 @@ function runOnStep()
     var currentCar = activeCars[i]
     var currentCarClientRect = currentCar.svgElement.getBoundingClientRect()
 
-    var absoluleCoordX = currentCarClientRect.left + currentCarClientRect.width / 2 - svgLeft
-    var absoluleCoordY = currentCarClientRect.top + currentCarClientRect.height / 2 - svgTop
+    var absoluleCoordX = currentCarClientRect.left + currentCarClientRect.width / 2 - SVG_LEFT
+    var absoluleCoordY = currentCarClientRect.top + currentCarClientRect.height / 2 - SVG_TOP
 
     var point = roadRoutes[currentCar.route]
         .path.getPointAtLength(currentCar.currentTime * roadRoutes[currentCar.route].length)
@@ -58,8 +58,8 @@ function runOnStep()
 
       var currentCarClientRect = currentCar.svgElement.getBoundingClientRect()
 
-      var absoluleCoordX = currentCarClientRect.left + currentCarClientRect.width / 2 - svgLeft
-      var absoluleCoordY = currentCarClientRect.top + currentCarClientRect.height / 2 - svgTop
+      var absoluleCoordX = currentCarClientRect.left + currentCarClientRect.width / 2 - SVG_LEFT
+      var absoluleCoordY = currentCarClientRect.top + currentCarClientRect.height / 2 - SVG_TOP
 
       if (currentCar.roadDirection == 1 || currentCar.roadDirection == 3) {
         var isTrafficAllowed = true
@@ -82,7 +82,7 @@ function runOnStep()
                 &&
                 5 == currentCar.route
                 &&
-                currentCar.absoluleCoordY < svgHeight / 2
+                currentCar.absoluleCoordY < SVG_HEIGHT / 2
               )
               ||
               (
@@ -90,7 +90,7 @@ function runOnStep()
                 &&
                 9 == currentCar.route
                 &&
-                currentCar.absoluleCoordY > svgHeight / 2
+                currentCar.absoluleCoordY > SVG_HEIGHT / 2
               )
             ) {
               isTrafficAllowed = false
@@ -154,7 +154,7 @@ function runOnStep()
                 &&
                 8 == currentCar.route
                 &&
-                currentCar.absoluleCoordX >= svgWidth / 2
+                currentCar.absoluleCoordX >= SVG_WIDTH / 2
               )
               ||
               (
@@ -162,7 +162,7 @@ function runOnStep()
                 &&
                 2 == currentCar.route
                 &&
-                currentCar.absoluleCoordX <= svgWidth / 2
+                currentCar.absoluleCoordX <= SVG_WIDTH / 2
               )
             ) {
               isTrafficAllowed = false

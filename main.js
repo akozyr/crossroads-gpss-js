@@ -1,14 +1,14 @@
-var roadRoutes = generateRoadRoutes(svg, ns)
-var trafficLight = null
-var activeCars = []
-var requestAnimationFrameID = null
-var isAnimationStarted = false
+const roadRoutes = generateRoadRoutes(svg, ns)
+let trafficLight = null
+const activeCars = []
+let requestAnimationFrameID = null
+let isAnimationStarted = false
 
 // class for input system parameters processing
-var inputParameters = new InputParameters()
+let inputParameters = new InputParameters()
 inputParameters.init()
 // class for output system parameters processing
-var outputParameters = null
+let outputParameters = null
 
 function startAnimation()
 {
@@ -20,8 +20,8 @@ function startAnimation()
 
     outputParameters = new OutputParameters()
 
-    var currentCarId = 0
-    var timerCarId = setInterval(() => {
+    let currentCarId = 0
+    const timerCarId = setInterval(() => {
       isAnimationStarted = true
       generateCar(svg, ns, currentCarId++)
     }, data.car_generation_delay)

@@ -1,32 +1,32 @@
 function generateRoadRoutes(svg, ns)
 {
-  const quarterOfRoadWidth = roadWidth / 4;
+  const quarterOfROAD_WIDTH = ROAD_WIDTH / 4;
 
   const roadRoutesData = [
     // from top to left
-    `M0,0V${grassHeight}q0,${quarterOfRoadWidth},${-quarterOfRoadWidth},${quarterOfRoadWidth}h${-grassWidth}`,
+    `M0,0V${grassHeight}q0,${quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH}h${-grassWidth}`,
     // from top to bottom
-    `M0,0V${svgHeight}`,
+    `M0,0V${SVG_HEIGHT}`,
     // from top to right
-    `M0,0V${grassHeight + roadWidth / 2}q0,${quarterOfRoadWidth},${quarterOfRoadWidth},${quarterOfRoadWidth}h${roadWidth / 2 + grassWidth}`,
+    `M0,0V${grassHeight + ROAD_WIDTH / 2}q0,${quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH}h${ROAD_WIDTH / 2 + grassWidth}`,
     // from right to top
-    `M0,0h${-grassWidth}q${-quarterOfRoadWidth},0,${-quarterOfRoadWidth},${-quarterOfRoadWidth}v${-grassHeight}`,
+    `M0,0h${-grassWidth}q${-quarterOfROAD_WIDTH},0,${-quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH}v${-grassHeight}`,
     // from right to
-    `M0,0H${-svgWidth}`,
+    `M0,0H${-SVG_WIDTH}`,
     // from right to bottom
-    `M0,0h${-grassWidth - roadWidth / 2}q${-quarterOfRoadWidth},0,${-quarterOfRoadWidth},${quarterOfRoadWidth}v${roadWidth / 2 + grassHeight}`,
+    `M0,0h${-grassWidth - ROAD_WIDTH / 2}q${-quarterOfROAD_WIDTH},0,${-quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH}v${ROAD_WIDTH / 2 + grassHeight}`,
     // from bottom to right
-    `M0,0v${-grassHeight}q0,${-quarterOfRoadWidth},${quarterOfRoadWidth},${-quarterOfRoadWidth}h${grassWidth}`,
+    `M0,0v${-grassHeight}q0,${-quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH}h${grassWidth}`,
     // from bottom to top
-    `M0,0v${-svgHeight}`,
+    `M0,0v${-SVG_HEIGHT}`,
     // from bottom to left
-    `M0,0v${-grassHeight - roadWidth / 2}q0,${-quarterOfRoadWidth},${-quarterOfRoadWidth},${-quarterOfRoadWidth}h${-roadWidth / 2 - grassWidth}`,
+    `M0,0v${-grassHeight - ROAD_WIDTH / 2}q0,${-quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH}h${-ROAD_WIDTH / 2 - grassWidth}`,
     // from left to top
-    `M0,0H${grassWidth + roadWidth / 2}q${quarterOfRoadWidth},0,${quarterOfRoadWidth},${-quarterOfRoadWidth}v${-(grassHeight + roadWidth / 2)}`,
+    `M0,0H${grassWidth + ROAD_WIDTH / 2}q${quarterOfROAD_WIDTH},0,${quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH}v${-(grassHeight + ROAD_WIDTH / 2)}`,
     // form left to right
-    `M0,0H${svgWidth}`,
+    `M0,0H${SVG_WIDTH}`,
     // from left to bottom
-    `M0,0H${grassWidth}q${quarterOfRoadWidth},0,${quarterOfRoadWidth},${quarterOfRoadWidth}v${grassHeight}`
+    `M0,0H${grassWidth}q${quarterOfROAD_WIDTH},0,${quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH}v${grassHeight}`
   ]
 
   const roadRoutes = []
@@ -69,23 +69,23 @@ function Car()
   this.init = (partOfCrossroads, route, carId) => {
     switch (partOfCrossroads) {
       case 'top':
-        this.startX = grassWidth + roadWidth / 4
+        this.startX = grassWidth + ROAD_WIDTH / 4
         this.startY = 0
         this.roadDirection = 0
         break
       case 'right':
-        this.startX = svgWidth
-        this.startY = grassHeight + roadWidth / 4
+        this.startX = SVG_WIDTH
+        this.startY = grassHeight + ROAD_WIDTH / 4
         this.roadDirection = 1
         break
       case 'bottom':
-        this.startX = grassWidth + roadWidth * 0.75
-        this.startY = svgHeight
+        this.startX = grassWidth + ROAD_WIDTH * 0.75
+        this.startY = SVG_HEIGHT
         this.roadDirection = 2
         break
       case 'left':
         this.startX = 0
-        this.startY = grassHeight + roadWidth * 0.75
+        this.startY = grassHeight + ROAD_WIDTH * 0.75
         this.roadDirection = 3
         break
     }
