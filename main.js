@@ -4,36 +4,36 @@ const activeCars = []
 let requestAnimationFrameID = null
 let isAnimationStarted = false
 
-// class for input system parameters processing
 let inputParameters = new InputParameters()
-inputParameters.init()
-// class for output system parameters processing
 let outputParameters = null
 
 function startAnimation()
 {
   event.preventDefault()
 
-  // GPSS variables
-  if (data = inputParameters.getFormData()) {
-    requestAnimationFrameID = requestAnimationFrame(step)
+  const formData = inputParameters.getFormData()
 
-    outputParameters = new OutputParameters()
-
-    let currentCarId = 0
-    const timerCarId = setInterval(() => {
-      isAnimationStarted = true
-      generateCar(svg, ns, currentCarId++)
-    }, data.car_generation_delay)
-
-    trafficLight = new TrafficLight()
-    trafficLight.init(data.color_changing_time)
-    trafficLight.run()
-
-    setTimeout(() => {
-      clearInterval(timerCarId)
-    }, data.cars_number * data.car_generation_delay)
+  if (!formData) {
+    return
   }
+
+  requestAnimationFrameID = requestAnimationFrame(step)
+
+  outputParameters = new OutputParameters()
+
+  let currentCarId = 0
+  const timerCarId = setInterval(() => {
+    isAnimationStarted = true
+    generateCar(svg, ns, currentCarId++)
+  }, formData.car_generation_delay)
+
+  trafficLight = new TrafficLight()
+  trafficLight.init(formData.color_changing_time)
+  trafficLight.run()
+
+  setTimeout(() => {
+    clearInterval(timerCarId)
+  }, formData.cars_number * formData.car_generation_delay)
 }
 
 function stopAnimation()
