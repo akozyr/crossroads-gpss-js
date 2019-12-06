@@ -7,10 +7,9 @@ svg.setAttribute('height', SVG_HEIGHT)
 
 const { top: SVG_TOP, left: SVG_LEFT } = svg.getBoundingClientRect()
 
-// draw the border
 const ns = 'http://www.w3.org/2000/svg'
 
-const setAttributesForObj = (obj, attrs) => {
+const getWithAttributes = (obj, attrs) => {
   Object.entries(attrs).forEach(([key, value]) => {
     obj.setAttribute(key, value);
   })
@@ -19,7 +18,7 @@ const setAttributesForObj = (obj, attrs) => {
 }
 
 svg.append(
-  setAttributesForObj(
+  getWithAttributes(
     document.createElementNS(ns, 'rect'),
     {
       x: 0,
@@ -50,7 +49,7 @@ const jsonGrassRectangles = [
 
 jsonGrassRectangles.forEach((grassRectangle) => {
   grassRectanglesGroup.append(
-    setAttributesForObj(
+    getWithAttributes(
       document.createElementNS(ns, 'rect'),
       grassRectangle
     )
@@ -67,7 +66,7 @@ const jsonHorizontalLines = [
 
 jsonHorizontalLines.forEach((horizontalLine) => {
   horizontalRoadMarkingGroup.append(
-    setAttributesForObj(
+    getWithAttributes(
       document.createElementNS(ns, 'line'),
       horizontalLine
     )
@@ -84,7 +83,7 @@ const jsonVerticalLines = [
 
 jsonVerticalLines.forEach((verticalLine) => {
   horizontalRoadMarkingGroup.append(
-    setAttributesForObj(
+    getWithAttributes(
       document.createElementNS(ns, 'line'),
       verticalLine
     )
@@ -98,7 +97,7 @@ const trafficLightWidth = 40
 const trafficLightHeight = 40
 
 trafficLightGroup.append(
-  setAttributesForObj(
+  getWithAttributes(
     document.createElementNS(ns, 'rect'),
     {
       x: SVG_WIDTH / 2 - trafficLightWidth / 2 + 1,
@@ -123,23 +122,23 @@ const jsonTrafficLightHorizontalParts = [
   { 'cx': SVG_WIDTH / 2 + trafficLightWidth / 3, 'cy': SVG_HEIGHT / 2 + 1, r: trafficLightPartRadius, fill: 'white' }
 ]
 
-const jsonTrafficLightVerticalParts = [
-  { 'cx': SVG_WIDTH / 2, 'cy': SVG_HEIGHT / 2 - trafficLightHeight / 3, r: trafficLightPartRadius, fill: 'white' },
-  { 'cx': SVG_WIDTH / 2, 'cy': SVG_HEIGHT / 2 + trafficLightHeight / 3, r: trafficLightPartRadius, fill: 'white' }
-]
-
 jsonTrafficLightHorizontalParts.forEach((part) => {
   trafficLightHorizontalGroup.append(
-    setAttributesForObj(
+    getWithAttributes(
       document.createElementNS(ns, 'circle'),
       part
     )
   )
 })
 
+const jsonTrafficLightVerticalParts = [
+  { 'cx': SVG_WIDTH / 2, 'cy': SVG_HEIGHT / 2 - trafficLightHeight / 3, r: trafficLightPartRadius, fill: 'white' },
+  { 'cx': SVG_WIDTH / 2, 'cy': SVG_HEIGHT / 2 + trafficLightHeight / 3, r: trafficLightPartRadius, fill: 'white' }
+]
+
 jsonTrafficLightVerticalParts.forEach((part) => {
   trafficLightVerticalGroup.append(
-    setAttributesForObj(
+    getWithAttributes(
       document.createElementNS(ns, 'circle'),
       part
     )
