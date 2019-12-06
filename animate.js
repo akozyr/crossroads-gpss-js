@@ -5,12 +5,12 @@ function step()
     stopAnimation()
     isAnimationStarted = false
 
-    outputParameters.fillOutForm()
+    metrics.fillOutForm()
 
     return
   }
 
-  outputParameters.increaseTotalTime()
+  metrics.increaseTotalTime()
 
   runOnStep()
 }
@@ -206,8 +206,8 @@ function runOnStep()
       }
     } else {
       currentCar.destroy()
-      outputParameters.setCarTime(currentCar.movingTime)
-      outputParameters.setRouteTime(currentCar.route, currentCar.movingTime)
+      metrics.setCarTime(currentCar.movingTime)
+      metrics.setRouteTime(currentCar.route, currentCar.movingTime)
       activeCars.splice(i, 1)
     }
   }

@@ -127,7 +127,7 @@ function generateCar(svg, ns, carId)
   const carTypeLabel = carTypeLabels[carType]
   const route = carType * 3 + getRandomInt(0, 3)
 
-  outputParameters.addElementToRoute(route)
+  metrics.addElementToRoute(route)
 
   car.init(carTypeLabel, route, carId)
   car.draw(svg, ns)

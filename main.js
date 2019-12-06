@@ -5,7 +5,7 @@ let requestAnimationFrameID = null
 let isAnimationStarted = false
 
 let inputParameters = new InputParameters()
-let outputParameters = null
+let metrics = null
 
 function startAnimation()
 {
@@ -19,7 +19,7 @@ function startAnimation()
 
   requestAnimationFrameID = requestAnimationFrame(step)
 
-  outputParameters = new OutputParameters()
+  metrics = new Metrics()
 
   let currentCarId = 0
   const timerCarId = setInterval(() => {
