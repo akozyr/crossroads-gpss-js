@@ -1,32 +1,32 @@
 function generateRoadRoutes(svg, ns)
 {
-  const quarterOfROAD_WIDTH = ROAD_WIDTH / 4;
+  const quarterOfRoadWidth = ROAD_WIDTH / 4;
 
   const roadRoutesData = [
     // from top to left
-    `M0,0V${grassHeight}q0,${quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH}h${-grassWidth}`,
+    `M0,0V${grassHeight}q0,${quarterOfRoadWidth},${-quarterOfRoadWidth},${quarterOfRoadWidth}h${-grassWidth}`,
     // from top to bottom
     `M0,0V${SVG_HEIGHT}`,
     // from top to right
-    `M0,0V${grassHeight + ROAD_WIDTH / 2}q0,${quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH}h${ROAD_WIDTH / 2 + grassWidth}`,
+    `M0,0V${grassHeight + ROAD_WIDTH / 2}q0,${quarterOfRoadWidth},${quarterOfRoadWidth},${quarterOfRoadWidth}h${ROAD_WIDTH / 2 + grassWidth}`,
     // from right to top
-    `M0,0h${-grassWidth}q${-quarterOfROAD_WIDTH},0,${-quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH}v${-grassHeight}`,
+    `M0,0h${-grassWidth}q${-quarterOfRoadWidth},0,${-quarterOfRoadWidth},${-quarterOfRoadWidth}v${-grassHeight}`,
     // from right to
     `M0,0H${-SVG_WIDTH}`,
     // from right to bottom
-    `M0,0h${-grassWidth - ROAD_WIDTH / 2}q${-quarterOfROAD_WIDTH},0,${-quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH}v${ROAD_WIDTH / 2 + grassHeight}`,
+    `M0,0h${-grassWidth - ROAD_WIDTH / 2}q${-quarterOfRoadWidth},0,${-quarterOfRoadWidth},${quarterOfRoadWidth}v${ROAD_WIDTH / 2 + grassHeight}`,
     // from bottom to right
-    `M0,0v${-grassHeight}q0,${-quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH}h${grassWidth}`,
+    `M0,0v${-grassHeight}q0,${-quarterOfRoadWidth},${quarterOfRoadWidth},${-quarterOfRoadWidth}h${grassWidth}`,
     // from bottom to top
     `M0,0v${-SVG_HEIGHT}`,
     // from bottom to left
-    `M0,0v${-grassHeight - ROAD_WIDTH / 2}q0,${-quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH}h${-ROAD_WIDTH / 2 - grassWidth}`,
+    `M0,0v${-grassHeight - ROAD_WIDTH / 2}q0,${-quarterOfRoadWidth},${-quarterOfRoadWidth},${-quarterOfRoadWidth}h${-ROAD_WIDTH / 2 - grassWidth}`,
     // from left to top
-    `M0,0H${grassWidth + ROAD_WIDTH / 2}q${quarterOfROAD_WIDTH},0,${quarterOfROAD_WIDTH},${-quarterOfROAD_WIDTH}v${-(grassHeight + ROAD_WIDTH / 2)}`,
+    `M0,0H${grassWidth + ROAD_WIDTH / 2}q${quarterOfRoadWidth},0,${quarterOfRoadWidth},${-quarterOfRoadWidth}v${-(grassHeight + ROAD_WIDTH / 2)}`,
     // form left to right
     `M0,0H${SVG_WIDTH}`,
     // from left to bottom
-    `M0,0H${grassWidth}q${quarterOfROAD_WIDTH},0,${quarterOfROAD_WIDTH},${quarterOfROAD_WIDTH}v${grassHeight}`
+    `M0,0H${grassWidth}q${quarterOfRoadWidth},0,${quarterOfRoadWidth},${quarterOfRoadWidth}v${grassHeight}`
   ]
 
   const roadRoutes = []
