@@ -11,8 +11,6 @@ class Metrics {
     this.carTime = []
     this.routeMaxElements = new Array(ROUTES_NUMBER).fill(0)
     this.routeAverageTime = [...new Array(ROUTES_NUMBER)].map(el => [])
-
-    console.log(this.routeAverageTime)
   }
 
   increaseTotalTime() {
@@ -46,8 +44,6 @@ class Metrics {
   }
 
   fillOutForm = () => {
-    console.log(this.routeAverageTime)
-
     $('#total-time').text(parseFloat(this.totalTime).toFixed(2))
     $('#average-time-of-car-moving').text(parseFloat(this.getAverageTimeOfCarMoving()).toFixed(2))
 

@@ -27,8 +27,7 @@ function startAnimation()
     generateCar(svg, ns, currentCarId++)
   }, formData.car_generation_delay)
 
-  trafficLight = new TrafficLight()
-  trafficLight.init(formData.color_changing_time)
+  trafficLight = new TrafficLight(formData.color_changing_time)
   trafficLight.run()
 
   setTimeout(() => {

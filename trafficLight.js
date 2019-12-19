@@ -1,70 +1,72 @@
-function TrafficLight()
-{
-  const yellowDuration = 500
+const TRAFFIC_LIGHT_COLORS = {
+  RED: 0,
+  YELLOW: 1,
+  GREEN: 2,
+  WHITE: 3
+}
 
-  // possible values:
-  // 0 - red, 1 - yellow, 2 - green
-  this.horizontalColor = 0
-  this.verticalColor = 2
-  this.trafficLightColorChangingTime = 0
-  this.timertTrafficLight = null
+const TRAFFIC_LIGHT_COLOR_LABELS = ['red', 'yellow', 'green', 'white']
 
-  this.init = (trafficLightColorChangingTime) => {
-    this.trafficLightColorChangingTime = trafficLightColorChangingTime
+const YELLOW_DURATION = 500
+
+class TrafficLight {
+  constructor(colorChangingTime) {
+    this.horizontalColor = TRAFFIC_LIGHT_COLORS.RED
+    this.verticalColor = TRAFFIC_LIGHT_COLORS.GREEN
+    this.colorChangingTime = colorChangingTime
+    this.timertTrafficLight = null
   }
 
-  this.run = () => {
-    var self = this
-
-    self.changeLight()
+  run() {
+    this._changeLight()
     this.timertTrafficLight = setInterval(() => {
-      self.changeLight()
-    }, this.trafficLightColorChangingTime)
+      this._changeLight()
+    }, this.colorChangingTime)
   }
 
-  this.stop = () => {
+  stop() {
     clearInterval(this.timertTrafficLight)
 
-    this.setVerticalGroupColor(3)
-    this.setHorizontalGroupColor(3)
+    this._setVerticalGroupColor(TRAFFIC_LIGHT_COLORS.WHITE)
+    this._setHorizontalGroupColor(TRAFFIC_LIGHT_COLORS.WHITE)
   }
 
-  this.changeLight = () => {
-    this.setVerticalGroupColor(1)
-    this.setHorizontalGroupColor(1)
-
+  _changeLight() {  
+    this._setVerticalGroupColor(TRAFFIC_LIGHT_COLORS.YELLOW)
+    this._setHorizontalGroupColor(TRAFFIC_LIGHT_COLORS.YELLOW)
+    
     setTimeout(() => {
-      if (this.horizontalColor == 0) {
-        this.verticalColor = 0
-        this.horizontalColor = 2
+      if (this.horizontalColor === TRAFFIC_LIGHT_COLORS.RED) {
+        this.verticalColor = TRAFFIC_LIGHT_COLORS.RED
+        this.horizontalColor = TRAFFIC_LIGHT_COLORS.GREEN
 
-        this.setVerticalGroupColor(0)
-        this.setHorizontalGroupColor(2)
-      } else {
-        this.verticalColor = 2
-        this.horizontalColor = 0
+        this._setVerticalGroupColor(TRAFFIC_LIGHT_COLORS.RED)
+        this._setHorizontalGroupColor(TRAFFIC_LIGHT_COLORS.GREEN)
 
-        this.setVerticalGroupColor(2)
-        this.setHorizontalGroupColor(0)
+        return
       }
-    }, yellowDuration)
+
+      this.verticalColor = TRAFFIC_LIGHT_COLORS.GREEN
+      this.horizontalColor = TRAFFIC_LIGHT_COLORS.RED
+
+      this._setVerticalGroupColor(TRAFFIC_LIGHT_COLORS.GREEN)
+      this._setHorizontalGroupColor(TRAFFIC_LIGHT_COLORS.RED)
+    }, YELLOW_DURATION)
   }
 
-  this.setHorizontalGroupColor = (colorId) => {
-    for (var i = 0; i < trafficLightHorizontalGroup.childNodes.length; i++) {
-      trafficLightHorizontalGroup.childNodes[i].setAttribute('fill', this.getColorLabel(colorId))
-    }
+  _setHorizontalGroupColor(colorId) {
+    trafficLightHorizontalGroup.childNodes.forEach((node) => {
+      node.setAttribute('fill', this._getColorLabel(colorId))
+    })
   }
 
-  this.setVerticalGroupColor = (colorId) => {
-    for (var i = 0; i < trafficLightVerticalGroup.childNodes.length; i++) {
-      trafficLightVerticalGroup.childNodes[i].setAttribute('fill', this.getColorLabel(colorId))
-    }
+  _setVerticalGroupColor(colorId) {
+    trafficLightVerticalGroup.childNodes.forEach((node) => {
+      node.setAttribute('fill', this._getColorLabel(colorId))
+    })
   }
 
-  this.getColorLabel = (colorId) => {
-    var colorLabels = ['red', 'yellow', 'green', 'white']
-
-    return colorLabels[colorId]
+  _getColorLabel(colorId) {
+    return TRAFFIC_LIGHT_COLOR_LABELS[colorId]
   }
 }
