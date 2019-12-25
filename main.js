@@ -1,6 +1,6 @@
 const roadRoutes = generateRoadRoutes(svg, ns)
 let trafficLight = null
-const activeCars = []
+let activeCars = []
 let requestAnimationFrameID = null
 let isAnimationStarted = false
 
