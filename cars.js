@@ -1,3 +1,31 @@
+const CAR_RADIUS = 15
+const CAR_COLORS = ['blue', 'fuchsia', 'gold', 'greenyellow']
+const CAR_DURATION = 100
+const ROAD_DIRECTIONS = {
+  TOP: 0,
+  RIGHT: 1,
+  BOTTOM: 2,
+  LEFT: 3,
+}
+const CAR_SETTINGS = {
+  [ROAD_DIRECTIONS.TOP]: {
+    startX: grassWidth + ROAD_WIDTH / 4,
+    startY: 0
+  },
+  [ROAD_DIRECTIONS.RIGHT]: {
+    startX: SVG_WIDTH,
+    startY: grassHeight + ROAD_WIDTH / 4
+  },
+  [ROAD_DIRECTIONS.BOTTOM]: {
+    startX: grassWidth + ROAD_WIDTH * 0.75,
+    startY: SVG_HEIGHT
+  },
+  [ROAD_DIRECTIONS.LEFT]: {
+    startX: 0,
+    startY: grassHeight + ROAD_WIDTH * 0.75
+  }
+}
+
 function generateRoadRoutes(svg, ns)
 {
   const quarterOfRoadWidth = ROAD_WIDTH / 4;
@@ -48,94 +76,66 @@ function generateRoadRoutes(svg, ns)
   return roadRoutes
 }
 
-function Car()
-{
-  const radius = 15
-  const carColor = ['blue', 'fuchsia', 'gold', 'greenyellow']
-  const duration = 100
+class Car {
+  constructor(roadDirection, route, carId) {
+    const { startX, startY } = CAR_SETTINGS[roadDirection]
 
-  this.startX = 0
-  this.startY = 0
-  this.roadDirection = null
-  this.currentTime = 0
-  this.deltaTime = 1 / duration
-  this.route = null
-  this.svgElement = null
-  this.carId = 0
-
-  // it's used for processing of output parameters
-  this.movingTime = 0
-
-  this.init = (partOfCrossroads, route, carId) => {
-    switch (partOfCrossroads) {
-      case 'top':
-        this.startX = grassWidth + ROAD_WIDTH / 4
-        this.startY = 0
-        this.roadDirection = 0
-        break
-      case 'right':
-        this.startX = SVG_WIDTH
-        this.startY = grassHeight + ROAD_WIDTH / 4
-        this.roadDirection = 1
-        break
-      case 'bottom':
-        this.startX = grassWidth + ROAD_WIDTH * 0.75
-        this.startY = SVG_HEIGHT
-        this.roadDirection = 2
-        break
-      case 'left':
-        this.startX = 0
-        this.startY = grassHeight + ROAD_WIDTH * 0.75
-        this.roadDirection = 3
-        break
-    }
+    this.startX = startX
+    this.startY = startY
+    this.roadDirection = roadDirection
 
     this.route = route
     this.carId = carId
+
+    this.currentTime = 0
+    this.deltaTime = 1 / CAR_DURATION
+    this.svgElement = null
+
+    // it's used for processing of output parameters
+    this.movingTime = 0
   }
 
-  this.draw = (svg, ns) => {
+  draw(svg, ns) {
     const car = document.createElementNS(ns, 'circle')
 
     car.setAttribute('cx', this.startX)
     car.setAttribute('cy', this.startY)
-    car.setAttribute('r', radius)
-    car.setAttribute('fill', carColor[this.roadDirection])
+    car.setAttribute('r', CAR_RADIUS)
+    car.setAttribute('fill', CAR_COLORS[this.roadDirection])
     car.setAttribute('id', 'car_' + this.carId)
 
     car.transform.baseVal.appendItem(svg.createSVGTransform())
 
     svg.append(car)
+
     this.svgElement = car
   }
 
-  this.move = (point) => {
+  move(point) {
     this.svgElement.transform.baseVal.getItem(0).setTranslate(point.x, point.y)
     this.currentTime += this.deltaTime
   }
 
-  this.destroy = () => {
+  destroy() {
     document.getElementById('car_' + this.carId).remove()
   }
 }
 
 function generateCar(svg, ns, carId)
 {
-  const car = new Car()
-  const carTypeLabels = ['top', 'right', 'bottom', 'left']
-  const carType = /*[0, 2][getRandomInt(0, 2)]*/getRandomInt(0, 4)
-  const carTypeLabel = carTypeLabels[carType]
-  const route = carType * 3 + getRandomInt(0, 3)
+  const roadDirection = /*[0, 2][_getRandomInt(0, 2)]*/_getRandomInt(0, 4)
+  const route = roadDirection * 3 + _getRandomInt(0, 3)
+
+  const car = new Car(roadDirection, route, carId)
+
+  car.draw(svg, ns)
 
   metrics.addElementToRoute(route)
-
-  car.init(carTypeLabel, route, carId)
-  car.draw(svg, ns)
 
   activeCars.push(car)
 }
 
-function getRandomInt(min, max)
+function _getRandomInt(min, max)
 {
   return Math.floor(Math.random() * (max - min)) + min
 }
