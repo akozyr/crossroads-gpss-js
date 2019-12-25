@@ -35,177 +35,175 @@ function runOnStep()
     coordsOfActiveCars.push(carInfo)
   })
 
-  for (var i = 0; i < activeCars.length; i++) {
-    var currentCar = activeCars[i]
-
-    if (currentCar.currentTime <= 1) {
+  activeCars.forEach((car, i) => {
+    if (car.currentTime <= 1) {
       // for output parameters
-      currentCar.movingTime++
+      car.movingTime++
       // remove a certain car from coordsOfActiveCars
-      var bufCoordsOfActiveCars = coordsOfActiveCars.slice()
+      const bufCoordsOfActiveCars = [...coordsOfActiveCars]
       bufCoordsOfActiveCars.splice(i, 1)
 
-      var point = roadRoutes[currentCar.route]
-        .path.getPointAtLength(currentCar.currentTime * roadRoutes[currentCar.route].length)
+      const roadRoute = roadRoutes[car.route]
+      const point = roadRoute.path.getPointAtLength(car.currentTime * roadRoute.length)
 
-      var xDirectionSign = Math.sign(Math.round(point.x))
-      var yDirectionSign = Math.sign(Math.round(point.y))
+      const xDirectionSign = Math.sign(Math.round(point.x))
+      const yDirectionSign = Math.sign(Math.round(point.y))
 
-      var currentCarClientRect = currentCar.svgElement.getBoundingClientRect()
+      const currentCarClientRect = car.svgElement.getBoundingClientRect()
 
-      var absoluleCoordX = currentCarClientRect.left + currentCarClientRect.width / 2 - SVG_LEFT
-      var absoluleCoordY = currentCarClientRect.top + currentCarClientRect.height / 2 - SVG_TOP
+      const absoluleCoordX = currentCarClientRect.left + currentCarClientRect.width / 2 - SVG_LEFT
+      const absoluleCoordY = currentCarClientRect.top + currentCarClientRect.height / 2 - SVG_TOP
 
-      if (currentCar.roadDirection == 1 || currentCar.roadDirection == 3) {
-        var isTrafficAllowed = true
+      if (car.roadDirection === ROAD_DIRECTIONS.RIGHT || car.roadDirection === ROAD_DIRECTIONS.LEFT) {
+        let isTrafficAllowed = true
 
-        if (trafficLight.horizontalColor == 0 && (Math.abs(point.x) > grassWidth * 0.9) && Math.abs(point.x) < grassWidth) {
+        if (trafficLight.horizontalColor === TRAFFIC_LIGHT_COLORS.RED && (Math.abs(point.x) > grassWidth * 0.9) && Math.abs(point.x) < grassWidth) {
           isTrafficAllowed = false
         }
 
-        for (var j = 0; j < bufCoordsOfActiveCars.length; j++) {
-          var distance = Math.sqrt(Math.pow(absoluleCoordX - bufCoordsOfActiveCars[j].x, 2)
-            + Math.pow(absoluleCoordY - bufCoordsOfActiveCars[j].y, 2))
+        bufCoordsOfActiveCars.forEach((carInfo) => {
+          const distance = Math.sqrt(Math.pow(absoluleCoordX - carInfo.x, 2)
+            + Math.pow(absoluleCoordY - carInfo.y, 2))
 
-          var checkXNeighbor = xDirectionSign > 0 ? (absoluleCoordX < bufCoordsOfActiveCars[j].x) : (absoluleCoordX > bufCoordsOfActiveCars[j].x)
-          var checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < bufCoordsOfActiveCars[j].y) : (absoluleCoordY > bufCoordsOfActiveCars[j].y)
+          const checkXNeighbor = xDirectionSign > 0 ? (absoluleCoordX < carInfo.x) : (absoluleCoordX > carInfo.x)
+          const checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < carInfo.y) : (absoluleCoordY > carInfo.y)
 
           if (distance < 40) {
             if (
               (
-                3 == bufCoordsOfActiveCars[j].road_dir
+                ROAD_DIRECTIONS.LEFT === carInfo.road_dir
                 &&
-                5 == currentCar.route
+                5 == car.route
                 &&
-                currentCar.absoluleCoordY < SVG_HEIGHT / 2
+                car.absoluleCoordY < SVG_HEIGHT / 2
               )
               ||
               (
-                1 == bufCoordsOfActiveCars[j].road_dir
+                ROAD_DIRECTIONS.RIGHT == carInfo.road_dir
                 &&
-                9 == currentCar.route
+                9 == car.route
                 &&
-                currentCar.absoluleCoordY > SVG_HEIGHT / 2
+                car.absoluleCoordY > SVG_HEIGHT / 2
               )
             ) {
               isTrafficAllowed = false
-              break
+              return
             } else if (
               (
-                3 == currentCar.roadDirection
+                ROAD_DIRECTIONS.LEFT == car.roadDirection
                 &&
-                5 == bufCoordsOfActiveCars[j].route
+                5 == carInfo.route
               )
               ||
               (
-                1 == currentCar.roadDirection
+                ROAD_DIRECTIONS.RIGHT == car.roadDirection
                 &&
-                9 == bufCoordsOfActiveCars[j].route
+                9 == carInfo.route
               )
             ) {
               // move car
             } else if (xDirectionSign != 0 && yDirectionSign != 0) {
               if (checkXNeighbor || checkYNeighbor) {
                 isTrafficAllowed = false
-                break
+                return
               }
             } else if (xDirectionSign != 0) {
               if (checkXNeighbor) {
                 isTrafficAllowed = false
-                break
+                return
               }
             } else if (yDirectionSign != 0) {
               if (checkYNeighbor) {
                 isTrafficAllowed = false
-                break
+                return
               }
             }
           }
-        }
+        })
 
         if (isTrafficAllowed) {
-          currentCar.move(point)
+          car.move(point)
         }
       }
 
-      if (currentCar.roadDirection == 0 || currentCar.roadDirection == 2) {
-        var isTrafficAllowed = true
+      if (car.roadDirection === ROAD_DIRECTIONS.TOP || car.roadDirection === ROAD_DIRECTIONS.BOTTOM) {
+        let isTrafficAllowed = true
 
-        if (trafficLight.verticalColor == 0 && (Math.abs(point.y) > grassHeight * 0.9) && Math.abs(point.y) < grassHeight) {
+        if (trafficLight.verticalColor === TRAFFIC_LIGHT_COLORS.RED && (Math.abs(point.y) > grassHeight * 0.9) && Math.abs(point.y) < grassHeight) {
           isTrafficAllowed = false
         }
 
-        for (var j = 0; j < bufCoordsOfActiveCars.length; j++) {
-          var distance = Math.sqrt(Math.pow(absoluleCoordX - bufCoordsOfActiveCars[j].x, 2)
-            + Math.pow(absoluleCoordY - bufCoordsOfActiveCars[j].y, 2))
+        bufCoordsOfActiveCars.forEach((carInfo) => {
+          const distance = Math.sqrt(Math.pow(absoluleCoordX - carInfo.x, 2)
+            + Math.pow(absoluleCoordY - carInfo.y, 2))
 
-          var checkXNeighbor = xDirectionSign > 0 ? (absoluleCoordX < bufCoordsOfActiveCars[j].x) : (absoluleCoordX > bufCoordsOfActiveCars[j].x)
-          var checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < bufCoordsOfActiveCars[j].y) : (absoluleCoordY > bufCoordsOfActiveCars[j].y)
+          var checkXNeighbor = xDirectionSign > 0 ? (absoluleCoordX < carInfo.x) : (absoluleCoordX > carInfo.x)
+          var checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < carInfo.y) : (absoluleCoordY > carInfo.y)
 
           if (distance < 40) {
             if (
               (
-                0 == bufCoordsOfActiveCars[j].road_dir
+                ROAD_DIRECTIONS.TOP == carInfo.road_dir
                 &&
-                8 == currentCar.route
+                8 == car.route
                 &&
-                currentCar.absoluleCoordX >= SVG_WIDTH / 2
+                car.absoluleCoordX >= SVG_WIDTH / 2
               )
               ||
               (
-                2 == bufCoordsOfActiveCars[j].road_dir
+                ROAD_DIRECTIONS.BOTTOM == carInfo.road_dir
                 &&
-                2 == currentCar.route
+                2 == car.route
                 &&
-                currentCar.absoluleCoordX <= SVG_WIDTH / 2
+                car.absoluleCoordX <= SVG_WIDTH / 2
               )
             ) {
               isTrafficAllowed = false
-              break
+              return
             } else if (
               (
-                0 == currentCar.roadDirection
+                ROAD_DIRECTIONS.TOP == car.roadDirection
                 &&
-                8 == bufCoordsOfActiveCars[j].route
+                8 == carInfo.route
               )
               ||
               (
-                2 == currentCar.roadDirection
+                ROAD_DIRECTIONS.BOTTOM == car.roadDirection
                 &&
-                2 == bufCoordsOfActiveCars[j].route
+                2 == carInfo.route
               )
             ) {
               // move car
             } else if (xDirectionSign != 0 && yDirectionSign != 0) {
               if (checkXNeighbor || checkYNeighbor) {
                 isTrafficAllowed = false
-                break
+                return
               }
             } else if (xDirectionSign != 0) {
               if (checkXNeighbor) {
                 isTrafficAllowed = false
-                break
+                return
               }
             } else if (yDirectionSign != 0) {
               if (checkYNeighbor) {
                 isTrafficAllowed = false
-                break
+                return
               }
             }
           }
-        }
+        })
 
         if (isTrafficAllowed) {
-          currentCar.move(point)
+          car.move(point)
         }
       }
     } else {
-      currentCar.destroy()
-      metrics.setCarTime(currentCar.movingTime)
-      metrics.setRouteTime(currentCar.route, currentCar.movingTime)
+      car.destroy()
+      metrics.setCarTime(car.movingTime)
+      metrics.setRouteTime(car.route, car.movingTime)
       activeCars.splice(i, 1)
     }
-  }
+  })
 
   requestAnimationFrameID = requestAnimationFrame(step)
 }
