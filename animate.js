@@ -1,6 +1,6 @@
 function step()
 {
-  if (isAnimationStarted && activeCars.length == 0) {
+  if (isAnimationStarted && activeCars.length === 0) {
     trafficLight.stop()
     stopAnimation()
     isAnimationStarted = false
@@ -17,28 +17,23 @@ function step()
 
 function runOnStep()
 {
-  var coordsOfActiveCars = []
+  const coordsOfActiveCars = []
 
-  for (var i = 0; i < activeCars.length; i++) {
-    var currentCar = activeCars[i]
-    var currentCarClientRect = currentCar.svgElement.getBoundingClientRect()
+  activeCars.forEach((car) => {
+    const currentCarClientRect = car.svgElement.getBoundingClientRect()
 
-    var absoluleCoordX = currentCarClientRect.left + currentCarClientRect.width / 2 - SVG_LEFT
-    var absoluleCoordY = currentCarClientRect.top + currentCarClientRect.height / 2 - SVG_TOP
+    const absoluleCoordX = currentCarClientRect.left + currentCarClientRect.width / 2 - SVG_LEFT
+    const absoluleCoordY = currentCarClientRect.top + currentCarClientRect.height / 2 - SVG_TOP
 
-    var point = roadRoutes[currentCar.route]
-        .path.getPointAtLength(currentCar.currentTime * roadRoutes[currentCar.route].length)
-
-    var xDirectionSign = Math.sign(Math.round(point.x))
-    var yDirectionSign = Math.sign(Math.round(point.y))
-
-    coordsOfActiveCars.push({
+    const carInfo = {
       x: absoluleCoordX,
       y: absoluleCoordY,
-      route: activeCars[i].route,
-      road_dir: activeCars[i].roadDirection
-    })
-  }
+      route: car.route,
+      road_dir: car.roadDirection
+    }
+
+    coordsOfActiveCars.push(carInfo)
+  })
 
   for (var i = 0; i < activeCars.length; i++) {
     var currentCar = activeCars[i]

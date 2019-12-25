@@ -1,6 +1,6 @@
 const CAR_RADIUS = 15
 const CAR_COLORS = ['blue', 'fuchsia', 'gold', 'greenyellow']
-const CAR_DURATION = 100
+const CAR_MOVING_DURATION = 100
 const ROAD_DIRECTIONS = {
   TOP: 0,
   RIGHT: 1,
@@ -88,7 +88,7 @@ class Car {
     this.carId = carId
 
     this.currentTime = 0
-    this.deltaTime = 1 / CAR_DURATION
+    this.deltaTime = 1 / CAR_MOVING_DURATION
     this.svgElement = null
 
     // it's used for processing of output parameters
