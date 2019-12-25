@@ -120,7 +120,7 @@ function checkIfMovingAllowed(car, neighborCars, carInfo) {
     let condition1 = (
       ROAD_DIRECTIONS.TOP == neighbor.roadDirection
       &&
-      8 == car.route
+      ROAD_ROUTES.BOTTOM_LEFT == car.route
       &&
       x >= SVG_WIDTH / 2
     )
@@ -128,7 +128,7 @@ function checkIfMovingAllowed(car, neighborCars, carInfo) {
     let condition2 = (
       ROAD_DIRECTIONS.BOTTOM == neighbor.roadDirection
       &&
-      2 == car.route
+      ROAD_ROUTES.TOP_RIGHT == car.route
       &&
       x <= SVG_WIDTH / 2
     )
@@ -136,7 +136,7 @@ function checkIfMovingAllowed(car, neighborCars, carInfo) {
       condition1 = (
         ROAD_DIRECTIONS.LEFT === neighbor.roadDirection
         &&
-        5 == car.route
+        ROAD_ROUTES.RIGHT_BOTTOM == car.route
         &&
         y < SVG_HEIGHT / 2
       )
@@ -144,7 +144,7 @@ function checkIfMovingAllowed(car, neighborCars, carInfo) {
       condition2 = (
         ROAD_DIRECTIONS.RIGHT == neighbor.roadDirection
         &&
-        9 == car.route
+        ROAD_ROUTES.LEFT_TOP == car.route
         &&
         y > SVG_HEIGHT / 2
       )

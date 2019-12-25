@@ -25,6 +25,20 @@ const CAR_SETTINGS = {
     startY: grassHeight + ROAD_WIDTH * 0.75
   }
 }
+const ROAD_ROUTES = {
+  TOP_LEFT: 0,
+  TOP_BOTTOM: 1,
+  TOP_RIGHT: 2,
+  RIGHT_TOP: 3,
+  RIGHT_LEFT: 4,
+  RIGHT_BOTTOM: 5,
+  BOTTOM_RIGHT: 6,
+  BOTTOM_TOP: 7,
+  BOTTOM_LEFT: 8,
+  LEFT_TOP: 9,
+  LEFT_RIGHT: 10,
+  LEFT_BOTTOM: 11
+}
 
 function generateRoadRoutes(svg, ns)
 {
@@ -39,7 +53,7 @@ function generateRoadRoutes(svg, ns)
     `M0,0V${grassHeight + ROAD_WIDTH / 2}q0,${quarterOfRoadWidth},${quarterOfRoadWidth},${quarterOfRoadWidth}h${ROAD_WIDTH / 2 + grassWidth}`,
     // from right to top
     `M0,0h${-grassWidth}q${-quarterOfRoadWidth},0,${-quarterOfRoadWidth},${-quarterOfRoadWidth}v${-grassHeight}`,
-    // from right to
+    // from right to left
     `M0,0H${-SVG_WIDTH}`,
     // from right to bottom
     `M0,0h${-grassWidth - ROAD_WIDTH / 2}q${-quarterOfRoadWidth},0,${-quarterOfRoadWidth},${quarterOfRoadWidth}v${ROAD_WIDTH / 2 + grassHeight}`,
@@ -123,7 +137,7 @@ class Car {
 
 function generateCar(svg, ns, carId)
 {
-  const roadDirection = /*[0, 2][_getRandomInt(0, 2)]*/_getRandomInt(0, 4)
+  const roadDirection = [0, 2][_getRandomInt(0, 2)]/*_getRandomInt(0, 4)*/
   const route = roadDirection * 3 + _getRandomInt(0, 3)
 
   const car = new Car(roadDirection, route, carId)
