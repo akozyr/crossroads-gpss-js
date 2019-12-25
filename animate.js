@@ -17,7 +17,7 @@ function step()
 
 function runOnStep()
 {
-  const coordsOfActiveCars = []
+  const carsInfo = []
 
   activeCars = activeCars.filter((car) => {
     if (car.currentTime <= 1) {
@@ -31,46 +31,46 @@ function runOnStep()
     return false
   })
 
+  // count all cars parameters
   activeCars.forEach((car) => {
     const carClientRect = car.svgElement.getBoundingClientRect()
 
-    const absoluleCoordX = carClientRect.left + carClientRect.width / 2 - SVG_LEFT
-    const absoluleCoordY = carClientRect.top + carClientRect.height / 2 - SVG_TOP
-
-    const carInfo = {
-      x: absoluleCoordX,
-      y: absoluleCoordY,
-      route: car.route,
-      road_dir: car.roadDirection
-    }
-
-    coordsOfActiveCars.push(carInfo)
-  })
-
-  activeCars.forEach((car, activeCarIndex) => {
-    // for output parameters
-    car.movingTime++
-    // remove a certain car from coordsOfActiveCars
-    const bufCoordsOfActiveCars = coordsOfActiveCars.filter((car, i) => i !== activeCarIndex)
+    const x = carClientRect.left + carClientRect.width / 2 - SVG_LEFT
+    const y = carClientRect.top + carClientRect.height / 2 - SVG_TOP
 
     const roadRoute = roadRoutes[car.route]
-    const point = roadRoute.path.getPointAtLength(car.currentTime * roadRoute.length)
+    const currentPoint = roadRoute.path.getPointAtLength(car.currentTime * roadRoute.length)
 
-    const xDirectionSign = Math.sign(Math.round(point.x))
-    const yDirectionSign = Math.sign(Math.round(point.y))
+    const signX = Math.sign(Math.round(currentPoint.x))
+    const signY = Math.sign(Math.round(currentPoint.y))
 
-    const carClientRect = car.svgElement.getBoundingClientRect()
+    const carInfo = {
+      x,
+      y,
+      signX,
+      signY,
+      route: car.route,
+      roadDirection: car.roadDirection,
+      point: currentPoint
+    }
 
-    const absoluleCoordX = carClientRect.left + carClientRect.width / 2 - SVG_LEFT
-    const absoluleCoordY = carClientRect.top + carClientRect.height / 2 - SVG_TOP
+    carsInfo.push(carInfo)
+  })
 
-    const isMovingAllowed = checkIfMovingAllowed(car, bufCoordsOfActiveCars, {
-      absoluleCoordX,
-      absoluleCoordY,
-      xDirectionSign,
-      yDirectionSign,
-      point
+  // check is we can move
+  activeCars.forEach((car, currentIndex) => {
+    car.movingTime++
+
+    const { x, y, point } = carsInfo[currentIndex]
+
+    const possibleObstacles = carsInfo.filter((carInfo, i) => {
+      const distance = Math.sqrt(Math.pow(x - carInfo.x, 2)
+        + Math.pow(y - carInfo.y, 2))
+
+      return distance < 40 && i !== currentIndex
     })
+
+    const isMovingAllowed = checkIfMovingAllowed(car, possibleObstacles, carsInfo[currentIndex])
 
     if (isMovingAllowed) {
       car.move(point)
@@ -80,14 +80,14 @@ function runOnStep()
   requestAnimationFrameID = requestAnimationFrame(step)
 }
 
-function checkIfMovingAllowed(car, neighborCars, options) {
+function checkIfMovingAllowed(car, neighborCars, carInfo) {
   const {
-    absoluleCoordX,
-    absoluleCoordY,
-    xDirectionSign,
-    yDirectionSign,
+    x,
+    y,
+    signX,
+    signY,
     point
-  } = options
+  } = carInfo
 
   const isHorizontal = isMovingHorizontal(car.roadDirection)
   const type = isHorizontal ? 'h' : 'v'
@@ -98,62 +98,55 @@ function checkIfMovingAllowed(car, neighborCars, options) {
     return isMovingAllowed
   }
 
-  const possibleObstacles = neighborCars.filter((neighbor) => {
-    const distance = Math.sqrt(Math.pow(absoluleCoordX - neighbor.x, 2)
-      + Math.pow(absoluleCoordY - neighbor.y, 2))
+  neighborCars.forEach((neighbor) => {
+    const checkXNeighbor = signX > 0 ? (x < neighbor.x) : (x > neighbor.x)
+    const checkYNeighbor = signY > 0 ? (y < neighbor.y) : (y > neighbor.y)
 
-    return distance < 40
-  })
-
-  possibleObstacles.forEach((neighbor) => {
-    const checkXNeighbor = xDirectionSign > 0 ? (absoluleCoordX < neighbor.x) : (absoluleCoordX > neighbor.x)
-    const checkYNeighbor = yDirectionSign > 0 ? (absoluleCoordY < neighbor.y) : (absoluleCoordY > neighbor.y)
-
-    if (xDirectionSign != 0 && yDirectionSign != 0 && (checkXNeighbor || checkYNeighbor)) {
+    if (signX != 0 && signY != 0 && (checkXNeighbor || checkYNeighbor)) {
       isMovingAllowed = false
       return
     }
 
-    if (xDirectionSign != 0 && checkXNeighbor) {
+    if (signX != 0 && checkXNeighbor) {
       isMovingAllowed = false
       return
     }
 
-    if (yDirectionSign != 0 && checkYNeighbor) {
+    if (signY != 0 && checkYNeighbor) {
       isMovingAllowed = false
       return
     }
 
     let condition1 = (
-      ROAD_DIRECTIONS.TOP == neighbor.road_dir
+      ROAD_DIRECTIONS.TOP == neighbor.roadDirection
       &&
       8 == car.route
       &&
-      car.absoluleCoordX >= SVG_WIDTH / 2
+      x >= SVG_WIDTH / 2
     )
 
     let condition2 = (
-      ROAD_DIRECTIONS.BOTTOM == neighbor.road_dir
+      ROAD_DIRECTIONS.BOTTOM == neighbor.roadDirection
       &&
       2 == car.route
       &&
-      car.absoluleCoordX <= SVG_WIDTH / 2
+      x <= SVG_WIDTH / 2
     )
     if (isHorizontal) {
       condition1 = (
-        ROAD_DIRECTIONS.LEFT === neighbor.road_dir
+        ROAD_DIRECTIONS.LEFT === neighbor.roadDirection
         &&
         5 == car.route
         &&
-        car.absoluleCoordY < SVG_HEIGHT / 2
+        y < SVG_HEIGHT / 2
       )
 
       condition2 = (
-        ROAD_DIRECTIONS.RIGHT == neighbor.road_dir
+        ROAD_DIRECTIONS.RIGHT == neighbor.roadDirection
         &&
         9 == car.route
         &&
-        car.absoluleCoordY > SVG_HEIGHT / 2
+        y > SVG_HEIGHT / 2
       )
     }
 
